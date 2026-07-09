@@ -1,0 +1,114 @@
+// Angular Material Theme Customization
+@use '@angular/material' as mat;
+@use '@angular/material/core/theming/palette' as palette;
+@use './variables' as vars;
+
+// Include the Material core styles (required)
+@include mat.core();
+
+// Use Material's built-in palette and customize it
+$custom-primary: mat.define-palette(palette.$green-palette, 800, 100, 900);
+$custom-accent: mat.define-palette(palette.$green-palette, 600, 100, 700);
+$custom-warn: mat.define-palette(palette.$red-palette, 500, 100, 900);
+
+$custom-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $custom-primary,
+      accent: $custom-accent,
+      warn: $custom-warn,
+    ),
+  )
+);
+
+// Include theme styles for core and each component
+@include mat.all-component-themes($custom-theme);
+
+/* ============================================ */
+/* CHECKBOX CUSTOMIZATION */
+/* ============================================ */
+
+// Force checkbox accent color to Petrol Green
+.mat-mdc-checkbox .mdc-checkbox__background {
+  background-color: vars.$color-primary;
+  border-color: vars.$color-primary !important;
+}
+
+.mat-mdc-checkbox-checked .mdc-checkbox__background {
+  background-color: vars.$color-primary !important;
+  border-color: vars.$color-primary !important;
+}
+
+.mat-mdc-checkbox-checked .mdc-checkbox__background svg {
+  fill: vars.$color-white !important;
+}
+
+.mat-mdc-checkbox:hover .mdc-checkbox__native-control:not(:disabled):checked ~ .mdc-checkbox__background {
+  background-color: vars.$color-primary-dark !important;
+  border-color: vars.$color-primary-dark !important;
+}
+
+/* Focus and outline state */
+.mdc-checkbox__native-control:focus ~ .mdc-checkbox__background {
+  border-color: vars.$color-primary !important;
+}
+
+.mat-mdc-checkbox-checked .mdc-checkbox__native-control:focus ~ .mdc-checkbox__background {
+  border-color: vars.$color-primary !important;
+  background-color: vars.$color-primary !important;
+}
+
+/* Remove ripple/outline colors that are different */
+.mat-mdc-checkbox .mat-mdc-checkbox-ripple {
+  background-color: transparent !important;
+}
+
+.mat-mdc-checkbox-checked .mdc-checkbox__ripple {
+  background-color: vars.$color-primary !important;
+}
+
+/* Force all border and outline states */
+.mdc-checkbox .mdc-checkbox__background {
+  border-color: vars.$color-primary !important;
+}
+
+.mdc-checkbox--checked .mdc-checkbox__background {
+  border-color: vars.$color-primary !important;
+}
+
+/* MDC focus ring */
+.mdc-checkbox:focus-within .mdc-checkbox__background {
+  border-color: vars.$color-primary !important;
+}
+
+/* ============================================ */
+/* HEADER CHECKBOX - Keep original border color */
+/* ============================================ */
+
+th .mat-mdc-checkbox .mdc-checkbox__background {
+  border-color: vars.$color-black !important;
+}
+
+th .mat-mdc-checkbox-checked .mdc-checkbox__background {
+  border-color: vars.$color-black !important;
+}
+
+th .mdc-checkbox__native-control:focus ~ .mdc-checkbox__background {
+  border-color: vars.$color-black !important;
+}
+
+th .mat-mdc-checkbox-checked .mdc-checkbox__native-control:focus ~ .mdc-checkbox__background {
+  border-color: vars.$color-black !important;
+}
+
+th .mdc-checkbox .mdc-checkbox__background {
+  border-color: vars.$color-black !important;
+}
+
+th .mdc-checkbox--checked .mdc-checkbox__background {
+  border-color: vars.$color-black !important;
+}
+
+th .mdc-checkbox:focus-within .mdc-checkbox__background {
+  border-color: vars.$color-black !important;
+}

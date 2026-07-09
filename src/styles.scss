@@ -1,0 +1,104 @@
+@use './variables' as vars;
+
+:root {
+  /* Colors - Primary Palette */
+  --color-primary: #{vars.$color-primary};
+  --color-primary-dark: #{vars.$color-primary-dark};
+  --color-primary-light: #{vars.$color-primary-light};
+
+  /* Colors - Neutral */
+  --color-white: #{vars.$color-white};
+  --color-black: #{vars.$color-black};
+  --color-gray-light: #{vars.$color-gray-light};
+  --color-gray-border: #{vars.$color-gray-border};
+  --color-gray-text: #{vars.$color-gray-text};
+
+  /* Spacing */
+  --spacing-xs: #{vars.$spacing-xs};
+  --spacing-sm: #{vars.$spacing-sm};
+  --spacing-md: #{vars.$spacing-md};
+  --spacing-lg: #{vars.$spacing-lg};
+  --spacing-xl: #{vars.$spacing-xl};
+  --spacing-xxl: #{vars.$spacing-xxl};
+
+  /* Typography */
+  --font-size-sm: #{vars.$font-size-sm};
+  --font-size-base: #{vars.$font-size-base};
+  --font-size-lg: #{vars.$font-size-lg};
+  --font-size-xl: #{vars.$font-size-xl};
+  --font-size-2xl: #{vars.$font-size-2xl};
+
+  --font-weight-normal: #{vars.$font-weight-normal};
+  --font-weight-medium: #{vars.$font-weight-medium};
+  --font-weight-semibold: #{vars.$font-weight-semibold};
+
+  /* Border Radius */
+  --border-radius-sm: #{vars.$border-radius-sm};
+  --border-radius-full: #{vars.$border-radius-full};
+
+  /* Shadows */
+  --shadow-sm: #{vars.$shadow-sm};
+  --shadow-md: #{vars.$shadow-md};
+
+  /* Transitions */
+  --transition-fast: #{vars.$transition-fast};
+  --transition-normal: #{vars.$transition-normal};
+
+  /* Breakpoints */
+  --breakpoint-tablet: #{vars.$breakpoint-tablet};
+  --breakpoint-desktop: #{vars.$breakpoint-desktop};
+}
+
+/* Base Styles */
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  color: var(--color-gray-text);
+}
+
+/* ============================================ */
+/* GLOBAL COMPONENT STYLES */
+/* ============================================ */
+
+/* Tables */
+table {
+  border-collapse: collapse;
+  background-color: var(--color-white);
+
+  th {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    font-weight: var(--font-weight-semibold);
+    padding: var(--spacing-lg) var(--spacing-md);
+    text-align: left;
+    border-bottom: 2px solid var(--color-primary-dark);
+  }
+
+  td {
+    padding: var(--spacing-md);
+    border-bottom: 1px solid var(--color-gray-border);
+  }
+
+  tr:hover {
+    background-color: var(--color-gray-light);
+  }
+}
+
+/* Buttons */
+button {
+  transition: var(--transition-fast);
+  font-weight: var(--font-weight-medium);
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+button:not(:disabled) {
+  cursor: pointer;
+}
