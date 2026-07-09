@@ -1,7 +1,10 @@
 <div class="lotes-page">
+  <app-lotes-filter (filterChange)="onFilterChange($event)"></app-lotes-filter>
+
   <mat-card class="content-card">
     <mat-card-content>
       <app-lotes-table></app-lotes-table>
     </mat-card-content>
   </mat-card>
 </div>
+

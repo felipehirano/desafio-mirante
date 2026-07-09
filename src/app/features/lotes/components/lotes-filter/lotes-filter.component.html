@@ -1,0 +1,202 @@
+<mat-card class="lotes-filter">
+  <!-- Card Header -->
+  <div class="card-header">
+    <h2 class="card-title">Filtros</h2>
+
+    <button
+      mat-icon-button
+      class="collapse-btn"
+      (click)="toggleExpanded()"
+      [attr.aria-expanded]="isExpanded()"
+    >
+      @if (isExpanded()) {
+        <mat-icon>expand_less</mat-icon>
+      } @else {
+        <mat-icon>expand_more</mat-icon>
+      }
+    </button>
+  </div>
+
+  <mat-card-content class="filter-content" [class.collapsed]="!isExpanded()">
+    <h2 class="card-subtitle">PESQUISAR LOTE OUTROS CRÉDITOS/DÉBITOS</h2>
+    <form [formGroup]="filterForm" class="filter-form">
+      <div class="filter-grid">
+        <!-- Left Column -->
+        <div class="filter-section">
+          <!-- Instituição Resp -->
+          <div class="form-group">
+            <label class="form-label">Instituição Resp.</label>
+            <mat-form-field appearance="outline" class="form-field">
+              <input
+                matInput
+                formControlName="instituicaoResp"
+                placeholder="0001 - SICOB"
+              />
+            </mat-form-field>
+          </div>
+
+          <!-- Instituição -->
+          <div class="form-group">
+            <label class="form-label">Instituição</label>
+            <mat-form-field appearance="outline" class="form-field">
+              <input
+                matInput
+                formControlName="instituicao"
+                placeholder="0002 - SICOB CENTRAL"
+              />
+            </mat-form-field>
+          </div>
+
+          <!-- Situação Lote -->
+          <div class="form-group">
+            <label class="form-label">Situação Lote</label>
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-select formControlName="situacao">
+                @for (option of situacaoOptions; track option.value) {
+                  <mat-option [value]="option.value">{{
+                    option.label
+                  }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="filter-section">
+          <!-- ID Lote Range -->
+          <div class="range-group">
+            <div class="range-header-row">
+              <span class="range-label">De</span>
+              <span class="range-label">Até</span>
+            </div>
+            <div class="range-content-row">
+              <span class="range-title">ID Lote</span>
+              <mat-form-field
+                appearance="outline"
+                class="form-field range-field"
+              >
+                <input
+                  matInput
+                  type="text"
+                  inputmode="numeric"
+                  (input)="onlyNumbers($event)"
+                  formControlName="idLoteMin"
+                />
+              </mat-form-field>
+              <mat-form-field
+                appearance="outline"
+                class="form-field range-field"
+              >
+                <input
+                  matInput
+                  type="text"
+                  inputmode="numeric"
+                  (input)="onlyNumbers($event)"
+                  formControlName="idLoteMax"
+                />
+              </mat-form-field>
+            </div>
+          </div>
+
+          <!-- Valor Lote Range -->
+          <div class="range-group">
+            <div class="range-header-row">
+              <span class="range-label">De</span>
+              <span class="range-label">Até</span>
+            </div>
+            <div class="range-content-row">
+              <span class="range-title">Valor Lote</span>
+              <mat-form-field
+                appearance="outline"
+                class="form-field range-field"
+              >
+                <input
+                  matInput
+                  type="text"
+                  inputmode="decimal"
+                  (input)="formatCurrency($event)"
+                  formControlName="valorLoteMin"
+                />
+              </mat-form-field>
+              <mat-form-field
+                appearance="outline"
+                class="form-field range-field"
+              >
+                <input
+                  matInput
+                  type="text"
+                  inputmode="decimal"
+                  (input)="formatCurrency($event)"
+                  formControlName="valorLoteMax"
+                />
+              </mat-form-field>
+            </div>
+          </div>
+
+          <!-- Data Entrada Range -->
+          <div class="range-group">
+            <div class="range-header-row">
+              <span class="range-label">De</span>
+              <span class="range-label">Até</span>
+            </div>
+            <div class="range-content-row">
+              <span class="range-title">Data Entrada</span>
+              <mat-form-field
+                appearance="outline"
+                class="form-field range-field"
+                (click)="pickerMin.open()"
+              >
+                <input
+                  matInput
+                  readonly
+                  [matDatepicker]="pickerMin"
+                  [matDatepickerFilter]="maxDateFilter"
+                  formControlName="dataEntradaMin"
+                />
+                <mat-datepicker-toggle
+                  matIconSuffix
+                  [for]="pickerMin"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #pickerMin></mat-datepicker>
+              </mat-form-field>
+              <mat-form-field
+                appearance="outline"
+                class="form-field range-field"
+                (click)="pickerMax.open()"
+              >
+                <input
+                  matInput
+                  readonly
+                  [matDatepicker]="pickerMax"
+                  [matDatepickerFilter]="minDateFilter"
+                  formControlName="dataEntradaMax"
+                />
+                <mat-datepicker-toggle
+                  matIconSuffix
+                  [for]="pickerMax"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #pickerMax></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="filter-actions">
+        <button type="button" mat-stroked-button (click)="onReset()">
+          Limpar Filtros
+        </button>
+        <button
+          type="button"
+          mat-raised-button
+          color="primary"
+          (click)="onSearch()"
+        >
+          Pesquisar
+        </button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

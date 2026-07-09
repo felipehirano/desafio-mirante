@@ -6,10 +6,44 @@
 // Include the Material core styles (required)
 @include mat.core();
 
+$custom-green-palette: (
+  50:  #e2efef,
+  100: #b7d7d7,
+  200: #88bdbd,
+  300: #58a3a3,
+  400: #348f8f,
+  500: #0d7a7a,
+  600: #0c7070,
+  700: #0b6565,
+  800: #0d5b5b,
+  900: #084747,
+  A100: #7fffff,
+  A200: #4dffff,
+  A400: #1affff,
+  A700: #00e5e5,
+  contrast: (
+    50: black,
+    100: black,
+    200: black,
+    300: white,
+    400: white,
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+    A100: black,
+    A200: black,
+    A400: black,
+    A700: black,
+  )
+);
+
 // Use Material's built-in palette and customize it
-$custom-primary: mat.define-palette(palette.$green-palette, 800, 100, 900);
-$custom-accent: mat.define-palette(palette.$green-palette, 600, 100, 700);
+$custom-primary: mat.define-palette($custom-green-palette, 800, 100, 900);
+$custom-accent: mat.define-palette($custom-green-palette, 600, 100, 700);
 $custom-warn: mat.define-palette(palette.$red-palette, 500, 100, 900);
+
 
 $custom-theme: mat.define-light-theme(
   (

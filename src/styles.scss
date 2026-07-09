@@ -64,30 +64,6 @@ body {
 /* GLOBAL COMPONENT STYLES */
 /* ============================================ */
 
-/* Tables */
-table {
-  border-collapse: collapse;
-  background-color: var(--color-white);
-
-  th {
-    background-color: var(--color-primary);
-    color: var(--color-white);
-    font-weight: var(--font-weight-semibold);
-    padding: var(--spacing-lg) var(--spacing-md);
-    text-align: left;
-    border-bottom: 2px solid var(--color-primary-dark);
-  }
-
-  td {
-    padding: var(--spacing-md);
-    border-bottom: 1px solid var(--color-gray-border);
-  }
-
-  tr:hover {
-    background-color: var(--color-gray-light);
-  }
-}
-
 /* Buttons */
 button {
   transition: var(--transition-fast);
