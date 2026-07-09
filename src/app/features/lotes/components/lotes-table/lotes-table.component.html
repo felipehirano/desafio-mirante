@@ -1,6 +1,27 @@
 ﻿<div class="lotes-table-container">
   <div class="table-wrapper">
-    <table mat-table [dataSource]="paginatedData" class="lotes-table">
+
+    @if (isLoading()) {
+      <table class="lotes-table skeleton-table">
+        <thead>
+          <tr>
+            @for (col of allColumns; track col) {
+              <th><div class="skeleton-cell"></div></th>
+            }
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of skeletonRows; track $index) {
+            <tr>
+              @for (col of allColumns; track col) {
+                <td><div class="skeleton-cell"></div></td>
+              }
+            </tr>
+          }
+        </tbody>
+      </table>
+    } @else {
+      <table mat-table [dataSource]="paginatedData" class="lotes-table">
 
       <ng-container matColumnDef="checkbox">
         <th mat-header-cell *matHeaderCellDef class="checkbox-column">
@@ -66,6 +87,8 @@
         </td>
       </tr>
     </table>
+    }
+
   </div>
 
   @if (paginatedData.length > 0) {

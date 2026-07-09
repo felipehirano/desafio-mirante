@@ -8,9 +8,9 @@ import { LOTES_MOCK } from '../mocks/lotes.mock';
   providedIn: 'root'
 })
 export class LoteService {
-  
+
   getLotes(): Observable<Lote[]> {
-    return of(LOTES_MOCK).pipe(delay(500));
+    return of(LOTES_MOCK).pipe(delay(1000));
   }
 
   getLoteById(id: number): Observable<Lote | undefined> {

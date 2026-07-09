@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -52,6 +52,9 @@ export class LotesTableComponent implements OnInit {
     return this.paginatedData.length > 0 ? this.allColumns : this.emptyColumns;
   }
 
+  isLoading = signal(true);
+  readonly skeletonRows = Array(5);
+
   dataSource = new MatTableDataSource<Lote>([]);
   selectedRows: Set<number> = new Set();
 
@@ -70,9 +73,11 @@ export class LotesTableComponent implements OnInit {
   }
 
   loadLotes(): void {
+    this.isLoading.set(true);
     this.loteService.getLotes().subscribe(lotes => {
       this.dataSource.data = lotes;
       this.updatePagination();
+      this.isLoading.set(false);
     });
   }
 
@@ -89,6 +94,7 @@ export class LotesTableComponent implements OnInit {
 
   onPageChange(page: number): void {
     this.currentPage = page;
+    this.selectedRows.clear();
     this.updatePaginatedData();
   }
 
@@ -121,16 +127,15 @@ export class LotesTableComponent implements OnInit {
   }
 
   toggleAllRows(): void {
-    if (this.selectedRows.size === this.dataSource.data.length) {
-      this.selectedRows.clear();
+    const allPageSelected = this.paginatedData.every(lote => this.selectedRows.has(lote.id));
+    if (allPageSelected) {
+      this.paginatedData.forEach(lote => this.selectedRows.delete(lote.id));
     } else {
-      this.dataSource.data.forEach(lote => {
-        this.selectedRows.add(lote.id);
-      });
+      this.paginatedData.forEach(lote => this.selectedRows.add(lote.id));
     }
   }
 
   isAllRowsSelected(): boolean {
-    return this.selectedRows.size === this.dataSource.data.length && this.dataSource.data.length > 0;
+    return this.paginatedData.length > 0 && this.paginatedData.every(lote => this.selectedRows.has(lote.id));
   }
 }
