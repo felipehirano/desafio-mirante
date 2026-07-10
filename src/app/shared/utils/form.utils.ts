@@ -112,26 +112,6 @@ export function isFormFieldBlank(formGroup: AbstractControl | null, fieldName: s
   return String(value ?? '').trim().length === 0;
 }
 
-export function focusFirstInvalidFormField(
-  hostElement: HTMLElement,
-  formGroup: AbstractControl | null,
-  fieldOrder: string[]
-): void {
-  for (const fieldName of fieldOrder) {
-    const control = getControl(formGroup, fieldName);
-    if (!control || control.disabled || control.valid) {
-      continue;
-    }
-
-    const controlElement =
-      (hostElement.querySelector(`[formControlName="${fieldName}"]`) as HTMLElement | null) ??
-      (hostElement.querySelector(`#${fieldName}`) as HTMLElement | null);
-
-    controlElement?.focus();
-    return;
-  }
-}
-
 export function createPositiveCurrencyValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     const value = parsePtBRCurrency(control.value ?? '');

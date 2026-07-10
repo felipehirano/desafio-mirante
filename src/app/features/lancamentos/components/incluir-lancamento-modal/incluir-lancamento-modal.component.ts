@@ -3,13 +3,13 @@ import { Component, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDialog } from '@angular/material/dialog';
-import { DestroyRef, ElementRef, Inject, inject } from '@angular/core';
+import { DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
@@ -17,7 +17,6 @@ import {
   applyOnlyNumbersInputWithControl,
   applyCurrencyInput,
   createPositiveCurrencyValidator,
-  focusFirstInvalidFormField,
   getFormFieldErrorMessageWithState,
   hasFormFieldErrorWithState,
   isFormFieldBlank,
@@ -27,10 +26,6 @@ import { CONTAS_CORRENTES_MOCK, ContaCorrenteMock } from '../../mocks/contas-cor
 import { ContaCorrenteSearchModalComponent } from '../conta-corrente-search-modal/conta-corrente-search-modal.component';
 import { EventoCscSearchModalComponent } from '../evento-csc-search-modal/evento-csc-search-modal.component';
 import { Lancamento } from '../../models/lancamento.model';
-
-interface IncluirLancamentoModalData {
-  loteId?: number;
-}
 
 @Component({
   selector: 'app-incluir-lancamento-modal',
@@ -51,7 +46,6 @@ interface IncluirLancamentoModalData {
 })
 export class IncluirLancamentoModalComponent {
   private readonly destroyRef = inject(DestroyRef);
-  private readonly hostElement = inject(ElementRef<HTMLElement>);
   private readonly contaCorrenteSearchSubject = new Subject<string>();
 
   readonly historicoOptions: string[] = [
@@ -66,14 +60,6 @@ export class IncluirLancamentoModalComponent {
   readonly contaCorrenteSearching = signal(false);
   readonly contaCorrenteValidada = signal(false);
   readonly submitAttempted = signal(false);
-  readonly requiredFieldOrder: string[] = [
-    'contaCorrente',
-    'valor',
-    'historico',
-    'documento',
-    'pa',
-    'complHistoricoCsc'
-  ];
 
   readonly form = this.fb.group({
     contaCorrente: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
@@ -93,8 +79,7 @@ export class IncluirLancamentoModalComponent {
   constructor(
     private readonly fb: FormBuilder,
     private readonly dialog: MatDialog,
-    private readonly dialogRef: MatDialogRef<IncluirLancamentoModalComponent, Lancamento>,
-    @Inject(MAT_DIALOG_DATA) readonly data: IncluirLancamentoModalData
+    private readonly dialogRef: MatDialogRef<IncluirLancamentoModalComponent, Lancamento>
   ) {
     this.initializeContaCorrenteSearch();
   }
@@ -186,18 +171,15 @@ export class IncluirLancamentoModalComponent {
     this.form.markAllAsTouched();
 
     if (isFormFieldBlank(this.form, 'contaCorrente')) {
-      focusFirstInvalidFormField(this.hostElement.nativeElement, this.form, this.requiredFieldOrder);
       return false;
     }
 
     if (!this.contaCorrenteValidada()) {
       this.setContaCorrenteLookupError();
-      focusFirstInvalidFormField(this.hostElement.nativeElement, this.form, this.requiredFieldOrder);
       return false;
     }
 
     if (this.form.invalid) {
-      focusFirstInvalidFormField(this.hostElement.nativeElement, this.form, this.requiredFieldOrder);
       return false;
     }
 
