@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatTableModule, MatTableDataSource } from '@angular/material/table';
+import { MatTableModule } from '@angular/material/table';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -54,15 +54,12 @@ export class LotesTableComponent implements OnChanges {
   ];
 
   readonly skeletonRows = Array(5);
-  dataSource = new MatTableDataSource<Lote>([]);
-
-  readonly facade = this.tableService;
 
   get displayedColumns(): string[] {
     return this.facade.paginatedData().length > 0 ? this.allColumns : this.emptyColumns;
   }
 
-  constructor(private tableService: LotesTableFacade) {
+  constructor(readonly facade: LotesTableFacade) {
     effect(() => {
       this.selectionChange.emit(this.facade.selectedCount());
     });
@@ -71,7 +68,6 @@ export class LotesTableComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['lotes']) {
       this.facade.setLotes(this.lotes);
-      this.dataSource.data = this.lotes;
     }
   }
 

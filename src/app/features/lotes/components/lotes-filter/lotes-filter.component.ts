@@ -4,7 +4,7 @@ import {
   ReactiveFormsModule,
   FormBuilder,
   FormGroup,
-  Validators,
+  Validators
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -19,8 +19,10 @@ import {
   createDateRangeValidator,
   createDynamicMinDateFilter,
   createDynamicMaxDateFilter,
-  extractOnlyNumbers,
-  formatCurrencyFromRawValue
+  applyOnlyNumbersInputWithControl,
+  applyCurrencyInput,
+  getFormFieldErrorMessage,
+  hasFormFieldError
 } from '../../../../shared/utils';
 
 
@@ -74,9 +76,9 @@ export class LotesFilterComponent implements OnInit {
         valorLoteMin: ['', Validators.pattern(/^\d{1,3}(\.\d{3})*(,\d{2})?$/)],
         valorLoteMax: ['', Validators.pattern(/^\d{1,3}(\.\d{3})*(,\d{2})?$/)],
         dataEntradaMin: [''],
-        dataEntradaMax: [''],
+        dataEntradaMax: ['']
       },
-      { validators: createDateRangeValidator('dataEntradaMin', 'dataEntradaMax') },
+      { validators: createDateRangeValidator('dataEntradaMin', 'dataEntradaMax') }
     );
   }
 
@@ -103,48 +105,19 @@ export class LotesFilterComponent implements OnInit {
     return createDynamicMaxDateFilter(this.filterForm, 'dataEntradaMax')(date);
   };
 
-  onlyNumbers(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    input.value = extractOnlyNumbers(input.value);
-  }
+  readonly onlyNumbers = (event: Event): void => {
+    applyOnlyNumbersInputWithControl(event, this.filterForm);
+  };
 
-  formatCurrency(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    const onlyDigits = input.value.replace(/\D/g, '');
+  readonly formatCurrency = (event: Event): void => {
+    applyCurrencyInput(event, this.filterForm);
+  };
 
-    if (parseInt(onlyDigits, 10) === 0) {
-      input.value = '';
-      const fieldName = input.getAttribute('formControlName');
-      if (fieldName) {
-        this.filterForm.get(fieldName)?.setValue('', { emitEvent: false });
-      }
-      return;
-    }
+  readonly getFieldError = (fieldName: string): string => {
+    return getFormFieldErrorMessage(this.filterForm, fieldName);
+  };
 
-    const formatted = formatCurrencyFromRawValue(input.value);
-    input.value = formatted;
-
-    const fieldName = input.getAttribute('formControlName');
-    if (fieldName) {
-      this.filterForm.get(fieldName)?.setValue(formatted, { emitEvent: false });
-    }
-  }
-
-  getFieldError(fieldName: string): string {
-    const control = this.filterForm.get(fieldName);
-    if (control?.errors && control?.touched) {
-      if (control.errors['maxlength']) {
-        return `Máximo de ${control.errors['maxlength'].requiredLength} caracteres`;
-      }
-      if (control.errors['pattern']) {
-        return 'Formato inválido';
-      }
-    }
-    return '';
-  }
-
-  hasError(fieldName: string): boolean {
-    const control = this.filterForm.get(fieldName);
-    return !!(control?.errors && control?.touched);
-  }
+  readonly hasError = (fieldName: string): boolean => {
+    return hasFormFieldError(this.filterForm, fieldName);
+  };
 }

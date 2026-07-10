@@ -23,10 +23,9 @@ import { LoteService } from '../../services/lote.service';
   styleUrls: ['./lotes-page.component.scss']
 })
 export class LotesPageComponent {
-  readonly facade = this.lotesf;
   readonly selectedCount = signal<number>(0);
 
-  constructor(private lotesf: LotesFilterFacade) {}
+  constructor(readonly facade: LotesFilterFacade) {}
 
   onFilterChange(filter: LoteFilter): void {
     this.facade.searchLotes(filter);

@@ -19,7 +19,6 @@
     mat-stroked-button
     (click)="onAction('alterar')"
     [disabled]="!isSingleSelected"
-    [matTooltip]="!isSingleSelected ? 'Selecione exatamente um lote' : ''"
     [attr.aria-label]="!isSingleSelected ? 'Alterar lote (selecione um lote)' : 'Alterar lote'"
     class="action-button">
     ALTERAR
@@ -29,7 +28,6 @@
     mat-stroked-button
     (click)="onAction('excluir')"
     [disabled]="!isSingleSelected"
-    [matTooltip]="!isSingleSelected ? 'Selecione exatamente um lote' : ''"
     [attr.aria-label]="!isSingleSelected ? 'Excluir lote (selecione um lote)' : 'Excluir lote'"
     class="action-button">
     EXCLUIR
@@ -39,7 +37,6 @@
     mat-stroked-button
     (click)="onAction('visualizar')"
     [disabled]="!isSingleSelected"
-    [matTooltip]="!isSingleSelected ? 'Selecione exatamente um lote' : ''"
     [attr.aria-label]="!isSingleSelected ? 'Visualizar lote (selecione um lote)' : 'Visualizar lote'"
     class="action-button">
     VISUALIZAR
