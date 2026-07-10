@@ -8,6 +8,7 @@
       class="collapse-btn"
       (click)="toggleExpanded()"
       [attr.aria-expanded]="isExpanded()"
+      [attr.aria-label]="isExpanded() ? 'Colapsar filtros' : 'Expandir filtros'"
     >
       @if (isExpanded()) {
         <mat-icon>expand_less</mat-icon>
@@ -25,33 +26,47 @@
         <div class="filter-section">
           <!-- Instituição Resp -->
           <div class="form-group">
-            <label class="form-label">Instituição Resp.</label>
+            <label class="form-label" for="instituicaoResp">Instituição Resp.</label>
             <mat-form-field appearance="outline" class="form-field">
               <input
+                id="instituicaoResp"
                 matInput
                 formControlName="instituicaoResp"
                 placeholder="0001 - SICOB"
+                [attr.aria-required]="true"
+                [attr.aria-invalid]="hasError('instituicaoResp')"
+                [attr.aria-describedby]="hasError('instituicaoResp') ? 'instituicaoResp-error' : null"
               />
             </mat-form-field>
+            @if (hasError('instituicaoResp')) {
+              <span id="instituicaoResp-error" class="error-message" role="alert">{{ getFieldError('instituicaoResp') }}</span>
+            }
           </div>
 
           <!-- Instituição -->
           <div class="form-group">
-            <label class="form-label">Instituição</label>
+            <label class="form-label" for="instituicao">Instituição</label>
             <mat-form-field appearance="outline" class="form-field">
               <input
+                id="instituicao"
                 matInput
                 formControlName="instituicao"
                 placeholder="0002 - SICOB CENTRAL"
+                [attr.aria-required]="true"
+                [attr.aria-invalid]="hasError('instituicao')"
+                [attr.aria-describedby]="hasError('instituicao') ? 'instituicao-error' : null"
               />
             </mat-form-field>
+            @if (hasError('instituicao')) {
+              <span id="instituicao-error" class="error-message" role="alert">{{ getFieldError('instituicao') }}</span>
+            }
           </div>
 
           <!-- Situação Lote -->
           <div class="form-group">
-            <label class="form-label">Situação Lote</label>
+            <label class="form-label" for="situacao">Situação Lote</label>
             <mat-form-field appearance="outline" class="form-field">
-              <mat-select formControlName="situacao">
+              <mat-select id="situacao" formControlName="situacao" [attr.aria-required]="true">
                 @for (option of situacaoOptions; track option.value) {
                   <mat-option [value]="option.value">{{
                     option.label
@@ -77,11 +92,15 @@
                 class="form-field range-field"
               >
                 <input
+                  id="idLoteMin"
                   matInput
                   type="text"
                   inputmode="numeric"
                   (input)="onlyNumbers($event)"
                   formControlName="idLoteMin"
+                  [attr.aria-label]="'ID Lote mínimo'"
+                  [attr.aria-invalid]="hasError('idLoteMin')"
+                  [attr.aria-describedby]="hasError('idLoteMin') ? 'idLoteMin-error' : null"
                 />
               </mat-form-field>
               <mat-form-field
@@ -89,11 +108,15 @@
                 class="form-field range-field"
               >
                 <input
+                  id="idLoteMax"
                   matInput
                   type="text"
                   inputmode="numeric"
                   (input)="onlyNumbers($event)"
                   formControlName="idLoteMax"
+                  [attr.aria-label]="'ID Lote máximo'"
+                  [attr.aria-invalid]="hasError('idLoteMax')"
+                  [attr.aria-describedby]="hasError('idLoteMax') ? 'idLoteMax-error' : null"
                 />
               </mat-form-field>
             </div>
@@ -112,11 +135,15 @@
                 class="form-field range-field"
               >
                 <input
+                  id="valorLoteMin"
                   matInput
                   type="text"
                   inputmode="decimal"
                   (input)="formatCurrency($event)"
                   formControlName="valorLoteMin"
+                  [attr.aria-label]="'Valor Lote mínimo'"
+                  [attr.aria-invalid]="hasError('valorLoteMin')"
+                  [attr.aria-describedby]="hasError('valorLoteMin') ? 'valorLoteMin-error' : null"
                 />
               </mat-form-field>
               <mat-form-field
@@ -124,11 +151,15 @@
                 class="form-field range-field"
               >
                 <input
+                  id="valorLoteMax"
                   matInput
                   type="text"
                   inputmode="decimal"
                   (input)="formatCurrency($event)"
                   formControlName="valorLoteMax"
+                  [attr.aria-label]="'Valor Lote máximo'"
+                  [attr.aria-invalid]="hasError('valorLoteMax')"
+                  [attr.aria-describedby]="hasError('valorLoteMax') ? 'valorLoteMax-error' : null"
                 />
               </mat-form-field>
             </div>
@@ -148,11 +179,13 @@
                 (click)="pickerMin.open()"
               >
                 <input
+                  id="dataEntradaMin"
                   matInput
                   readonly
                   [matDatepicker]="pickerMin"
                   [matDatepickerFilter]="maxDateFilter"
                   formControlName="dataEntradaMin"
+                  [attr.aria-label]="'Data Entrada mínima'"
                 />
                 <mat-datepicker-toggle
                   matIconSuffix
@@ -166,11 +199,13 @@
                 (click)="pickerMax.open()"
               >
                 <input
+                  id="dataEntradaMax"
                   matInput
                   readonly
                   [matDatepicker]="pickerMax"
                   [matDatepickerFilter]="minDateFilter"
                   formControlName="dataEntradaMax"
+                  [attr.aria-label]="'Data Entrada máxima'"
                 />
                 <mat-datepicker-toggle
                   matIconSuffix

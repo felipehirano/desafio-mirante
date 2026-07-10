@@ -1,17 +1,17 @@
 <div class="lotes-actions-container">
-  <button mat-stroked-button (click)="onAction('confirmar')" class="action-button">
+  <button mat-stroked-button (click)="onAction('confirmar')" class="action-button" [attr.aria-label]="'Confirmar lote'">
     CONFIRMAR
   </button>
 
-  <button mat-stroked-button (click)="onAction('enviar')" class="action-button">
+  <button mat-stroked-button (click)="onAction('enviar')" class="action-button" [attr.aria-label]="'Enviar lote'">
     ENVIAR
   </button>
 
-  <button mat-stroked-button (click)="onAction('visualizar-justificativa')" class="action-button">
+  <button mat-stroked-button (click)="onAction('visualizar-justificativa')" class="action-button" [attr.aria-label]="'Visualizar justificativa do lote'">
     VISUALIZAR JUSTIFICATIVA
   </button>
 
-  <button mat-raised-button color="primary" (click)="onAction('incluir')" class="action-button action-button--primary">
+  <button mat-raised-button color="primary" (click)="onAction('incluir')" class="action-button action-button--primary" [attr.aria-label]="'Incluir novo lote'">
     INCLUIR
   </button>
 
@@ -20,6 +20,7 @@
     (click)="onAction('alterar')"
     [disabled]="!isSingleSelected"
     [matTooltip]="!isSingleSelected ? 'Selecione exatamente um lote' : ''"
+    [attr.aria-label]="!isSingleSelected ? 'Alterar lote (selecione um lote)' : 'Alterar lote'"
     class="action-button">
     ALTERAR
   </button>
@@ -29,6 +30,7 @@
     (click)="onAction('excluir')"
     [disabled]="!isSingleSelected"
     [matTooltip]="!isSingleSelected ? 'Selecione exatamente um lote' : ''"
+    [attr.aria-label]="!isSingleSelected ? 'Excluir lote (selecione um lote)' : 'Excluir lote'"
     class="action-button">
     EXCLUIR
   </button>
@@ -38,6 +40,7 @@
     (click)="onAction('visualizar')"
     [disabled]="!isSingleSelected"
     [matTooltip]="!isSingleSelected ? 'Selecione exatamente um lote' : ''"
+    [attr.aria-label]="!isSingleSelected ? 'Visualizar lote (selecione um lote)' : 'Visualizar lote'"
     class="action-button">
     VISUALIZAR
   </button>

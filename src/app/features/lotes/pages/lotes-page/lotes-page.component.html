@@ -1,5 +1,20 @@
-<div class="lotes-page">
-  <mat-card class="content-card">
+<div class="lotes-page" role="main" [attr.aria-label]="'Página de gerenciamento de lotes'">
+  <!-- Status anúncio para leitores de tela -->
+  <div
+    class="sr-only"
+    [attr.aria-live]="'polite'"
+    [attr.aria-atomic]="'true'"
+    role="status">
+    @if (facade.isLoading()) {
+      <span>Pesquisando lotes...</span>
+    } @else if (facade.lotes().length > 0) {
+      <span>{{ facade.lotes().length }} lotes encontrados</span>
+    } @else if (facade.hasFilter()) {
+      <span>Nenhum lote encontrado com os filtros aplicados</span>
+    }
+  </div>
+
+  <mat-card class="content-card" [attr.aria-label]="'Card de gerenciamento de lotes'">
     <mat-card-content class="card-content">
       <div class="filter-section">
         <app-lotes-filter [isLoading]="facade.isLoading()" (filterChange)="onFilterChange($event)"></app-lotes-filter>

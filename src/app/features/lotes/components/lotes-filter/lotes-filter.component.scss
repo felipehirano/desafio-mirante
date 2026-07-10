@@ -48,6 +48,14 @@
   background-color: #fafafa;
 }
 
+.error-message {
+  display: block;
+  color: var(--color-error, #d32f2f);
+  font-size: var(--font-size-xs);
+  margin-top: var(--spacing-xs);
+  font-weight: var(--font-weight-medium);
+}
+
 .filter-title {
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);

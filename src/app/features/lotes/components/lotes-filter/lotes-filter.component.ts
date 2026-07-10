@@ -129,4 +129,22 @@ export class LotesFilterComponent implements OnInit {
       this.filterForm.get(fieldName)?.setValue(formatted, { emitEvent: false });
     }
   }
+
+  getFieldError(fieldName: string): string {
+    const control = this.filterForm.get(fieldName);
+    if (control?.errors && control?.touched) {
+      if (control.errors['maxlength']) {
+        return `Máximo de ${control.errors['maxlength'].requiredLength} caracteres`;
+      }
+      if (control.errors['pattern']) {
+        return 'Formato inválido';
+      }
+    }
+    return '';
+  }
+
+  hasError(fieldName: string): boolean {
+    const control = this.filterForm.get(fieldName);
+    return !!(control?.errors && control?.touched);
+  }
 }
