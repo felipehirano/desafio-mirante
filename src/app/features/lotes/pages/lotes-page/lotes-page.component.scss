@@ -1,7 +1,7 @@
 .lotes-page {
-  padding: var(--spacing-xl);
+  padding: var(--spacing-xl) var(--spacing-xl) var(--spacing-md);
   background-color: var(--color-gray-light);
-  min-height: 100vh;
+  min-height: auto;
 }
 
 .content-card {
@@ -14,6 +14,24 @@
   flex-direction: column;
   gap: var(--spacing-lg) !important;
   height: 100%;
+}
+
+.lotes-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-xs);
+}
+
+.lotes-title {
+  margin: 0;
+  font-size: var(--font-size-lg);
+  color: var(--color-primary);
+}
+
+.lotes-count {
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-text);
 }
 
 .filter-section {
@@ -44,11 +62,17 @@
 
 @media (max-width: 768px) {
   .lotes-page {
-    padding: var(--spacing-lg);
+    padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-sm);
   }
 
   .card-content {
     padding: var(--spacing-md, 12px);
     gap: var(--spacing-md, 12px);
+  }
+
+  .lotes-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-xs);
   }
 }

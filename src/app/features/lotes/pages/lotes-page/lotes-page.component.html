@@ -15,6 +15,11 @@
 
   <mat-card class="content-card" [attr.aria-label]="'Card de gerenciamento de lotes'">
     <mat-card-content class="card-content">
+      <div class="lotes-header">
+        <h2 class="lotes-title">Lotes</h2>
+        <span class="lotes-count">{{ facade.lotes().length }} registro(s)</span>
+      </div>
+
       <div class="filter-section">
         <app-lotes-filter [isLoading]="facade.isLoading()" (filterChange)="onFilterChange($event)"></app-lotes-filter>
       </div>
