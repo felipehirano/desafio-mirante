@@ -1,5 +1,5 @@
 import { Injectable, computed, signal } from '@angular/core';
-import { Lote } from '../../../core/models/lote.model';
+import { Lote } from '../models/lote.model';
 
 @Injectable()
 export class LotesTableFacade {

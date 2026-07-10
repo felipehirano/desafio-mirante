@@ -5,8 +5,8 @@ import { LotesTableComponent } from '../../components/lotes-table/lotes-table.co
 import { LotesFilterComponent } from '../../components/lotes-filter/lotes-filter.component';
 import { LotesActionsComponent, LoteAction } from '../../components/lotes-actions/lotes-actions.component';
 import { LoteFilter } from '../../../../shared/models/lote-filter.model';
-import { LotesFacade } from '../../../../core/services/lotes.facade';
-import { LoteService } from '../../../../core/services/lote.service';
+import { LotesFilterFacade } from '../../services/lotes-filter.facade';
+import { LoteService } from '../../services/lote.service';
 
 @Component({
   selector: 'app-lotes-page',
@@ -18,7 +18,7 @@ import { LoteService } from '../../../../core/services/lote.service';
     LotesFilterComponent,
     LotesActionsComponent
   ],
-  providers: [LoteService, LotesFacade],
+  providers: [LoteService, LotesFilterFacade],
   templateUrl: './lotes-page.component.html',
   styleUrls: ['./lotes-page.component.scss']
 })
@@ -26,7 +26,7 @@ export class LotesPageComponent {
   readonly facade = this.lotesf;
   readonly selectedCount = signal<number>(0);
 
-  constructor(private lotesf: LotesFacade) {}
+  constructor(private lotesf: LotesFilterFacade) {}
 
   onFilterChange(filter: LoteFilter): void {
     this.facade.searchLotes(filter);

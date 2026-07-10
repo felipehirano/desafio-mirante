@@ -1,10 +1,10 @@
 import { Injectable, signal, computed } from '@angular/core';
 import { Lote } from '../models/lote.model';
-import { LoteFilter } from '../../shared/models/lote-filter.model';
+import { LoteFilter } from '../../../shared/models/lote-filter.model';
 import { LoteService } from './lote.service';
 
 @Injectable()
-export class LotesFacade {
+export class LotesFilterFacade {
   private readonly filterState = signal<LoteFilter>({});
   private readonly lotesState = signal<Lote[]>([]);
   private readonly isLoadingState = signal(false);

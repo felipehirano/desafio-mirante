@@ -1,4 +1,4 @@
-import { Lote } from '../../core/models/lote.model';
+import { Lote } from '../../features/lotes/models/lote.model';
 import { LoteFilter } from '../models/lote-filter.model';
 import { parsePtBRCurrency } from './currency.utils';
 

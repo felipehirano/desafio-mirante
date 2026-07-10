@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
 import { LotesPageComponent } from './features/lotes/pages/lotes-page/lotes-page.component';
-import { PageHeaderComponent } from './shared/components/page-header/page-header.component';
+import { PageHeaderComponent } from './core/layout/page-header/page-header.component';
 import { BreadcrumbItem } from './shared/models/breadcrumb.model';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, LotesPageComponent, PageHeaderComponent],
+  imports: [LotesPageComponent, PageHeaderComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })

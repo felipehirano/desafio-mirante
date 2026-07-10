@@ -1,0 +1,11 @@
+<mat-toolbar class="page-header">
+  <div class="page-header__content">
+    <span class="page-header__title">{{ title }}</span>
+
+    @if (breadcrumbs.length > 0) {
+      <app-breadcrumb [items]="breadcrumbs"></app-breadcrumb>
+    }
+  </div>
+
+  <span class="page-header__spacer"></span>
+</mat-toolbar>

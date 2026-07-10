@@ -6,7 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { CustomPaginationComponent } from '../../../../shared/components/custom-pagination/custom-pagination.component';
-import { Lote } from '../../../../core/models/lote.model';
+import { Lote } from '../../models/lote.model';
 import { LotesTableFacade } from '../../services/lotes-table.facade';
 
 @Component({

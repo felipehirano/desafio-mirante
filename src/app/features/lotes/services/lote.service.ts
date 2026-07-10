@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { delay, map } from 'rxjs/operators';
-import { Lote } from '../models/lote.model';
-import { LoteFilter } from '../../shared/models/lote-filter.model';
+import { LoteFilter } from '../../../shared/models/lote-filter.model';
+import { applyLoteFilters } from '../../../shared/utils';
 import { LOTES_MOCK } from '../mocks/lotes.mock';
-import { applyLoteFilters } from '../../shared/utils';
+import { Lote } from '../models/lote.model';
+
 
 @Injectable()
 export class LoteService {
