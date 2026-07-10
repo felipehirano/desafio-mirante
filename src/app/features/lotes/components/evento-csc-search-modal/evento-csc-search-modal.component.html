@@ -1,0 +1,68 @@
+<h2 mat-dialog-title class="search-title">Pesquisa Evento</h2>
+
+<mat-dialog-content class="search-content">
+  <form [formGroup]="form" class="search-form">
+    <div class="search-row">
+      <mat-form-field appearance="outline" class="search-input">
+        <mat-label>Valor</mat-label>
+        <input matInput formControlName="valor" aria-label="Valor para filtrar eventos" />
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" class="search-list-button" type="button" (click)="onListar()">Listar</button>
+    </div>
+  </form>
+
+  <div class="table-wrapper">
+    <table mat-table [dataSource]="pagedEventos()" class="search-table" aria-label="Tabela de eventos CSC">
+      <ng-container matColumnDef="idEvento">
+        <th mat-header-cell *matHeaderCellDef>ID Evento</th>
+        <td mat-cell *matCellDef="let item">{{ item.idEvento }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="codEvento">
+        <th mat-header-cell *matHeaderCellDef>Cod. Evento</th>
+        <td mat-cell *matCellDef="let item">{{ item.codEvento }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="descricao">
+        <th mat-header-cell *matHeaderCellDef>Descricao</th>
+        <td mat-cell *matCellDef="let item">{{ item.descricao }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="dtInicio">
+        <th mat-header-cell *matHeaderCellDef>Dt.Inicio</th>
+        <td mat-cell *matCellDef="let item">{{ item.dtInicio }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="dtFim">
+        <th mat-header-cell *matHeaderCellDef>Dt.Fim</th>
+        <td mat-cell *matCellDef="let item">{{ item.dtFim || '-' }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: displayedColumns"
+        (click)="onSelectEvento(row)"
+        [class.selected-row]="isSelected(row)">
+      </tr>
+
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell no-data-cell" [attr.colspan]="displayedColumns.length">
+          Nenhum evento encontrado para o valor informado.
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="pagination-row">
+    <button mat-stroked-button type="button" (click)="onPaginaAnterior()" [disabled]="currentPage() === 0">Anterior</button>
+    <span class="page-label">Pagina {{ currentPage() + 1 }}</span>
+    <button mat-stroked-button type="button" (click)="onPaginaProxima()" [disabled]="currentPage() >= totalPages() - 1">Proxima</button>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="search-footer">
+  <button mat-raised-button color="primary" type="button" (click)="onOk()" [disabled]="!selectedEventoId()">OK</button>
+  <button mat-stroked-button type="button" (click)="onFechar()">Fechar</button>
+</mat-dialog-actions>

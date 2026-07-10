@@ -1,0 +1,53 @@
+<h2 mat-dialog-title class="search-title">Pesquisa Conta Corrente</h2>
+
+<mat-dialog-content class="search-content">
+  <form [formGroup]="form" class="search-form">
+    <div class="search-row">
+      <mat-form-field appearance="outline" class="search-input">
+        <mat-label>Valor</mat-label>
+        <input matInput formControlName="valor" aria-label="Valor para filtrar contas correntes" />
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" class="search-list-button" type="button" (click)="onListar()">Listar</button>
+    </div>
+  </form>
+
+  <div class="table-wrapper">
+    <table mat-table [dataSource]="pagedContas()" class="search-table" aria-label="Tabela de contas correntes">
+      <ng-container matColumnDef="numero">
+        <th mat-header-cell *matHeaderCellDef>Conta Corrente</th>
+        <td mat-cell *matCellDef="let item">{{ item.numero }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="titular">
+        <th mat-header-cell *matHeaderCellDef>Titular</th>
+        <td mat-cell *matCellDef="let item">{{ item.titular }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: displayedColumns"
+        (click)="onSelectConta(row)"
+        [class.selected-row]="isSelected(row)">
+      </tr>
+
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell no-data-cell" [attr.colspan]="displayedColumns.length">
+          Nenhuma conta encontrada para o valor informado.
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="pagination-row">
+    <button mat-stroked-button type="button" (click)="onPaginaAnterior()" [disabled]="currentPage() === 0">Anterior</button>
+    <span class="page-label">Pagina {{ currentPage() + 1 }}</span>
+    <button mat-stroked-button type="button" (click)="onPaginaProxima()" [disabled]="currentPage() >= totalPages() - 1">Proxima</button>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="search-footer">
+  <button mat-raised-button color="primary" type="button" (click)="onOk()" [disabled]="!selectedContaNumero()">OK</button>
+  <button mat-stroked-button type="button" (click)="onFechar()">Fechar</button>
+</mat-dialog-actions>

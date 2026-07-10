@@ -1,0 +1,199 @@
+<h2 mat-dialog-title class="modal-title">Incluir Lancamento</h2>
+
+<mat-dialog-content class="modal-content">
+  <form [formGroup]="form" class="modal-form">
+    <section class="form-section">
+      <h3 class="section-title">Conta Corrente</h3>
+
+      <div class="field-row">
+        <label class="field-label" for="contaCorrente">Conta Corrente <span class="required">*</span></label>
+        <div class="field-control field-control--inline">
+          <mat-form-field appearance="outline" class="field-compact field-compact--conta">
+            <input
+              id="contaCorrente"
+              matInput
+              formControlName="contaCorrente"
+              readonly
+              placeholder="Numero"
+              aria-label="Conta corrente"
+            />
+            @if (hasError('contaCorrente')) {
+              <mat-error>{{ getFieldError('contaCorrente') }}</mat-error>
+            }
+          </mat-form-field>
+
+          <button mat-icon-button type="button" class="search-button" (click)="onBuscarContaCorrente()" aria-label="Buscar conta corrente">
+            <mat-icon>search</mat-icon>
+          </button>
+
+          <span class="holder-name" [class.holder-name--empty]="!titularEncontrado()">
+            {{ titularEncontrado() || 'Titular nao localizado' }}
+          </span>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <label class="field-label" for="valor">Valor <span class="required">*</span></label>
+        <div class="field-control">
+          <mat-form-field appearance="outline" class="field-compact field-compact--valor">
+            <input
+              id="valor"
+              matInput
+              formControlName="valor"
+              inputmode="decimal"
+              (input)="onValorInput($event)"
+              placeholder="0,00"
+              aria-label="Valor do lancamento"
+            />
+            @if (hasError('valor')) {
+              <mat-error>{{ getFieldError('valor') }}</mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="field-row field-row--top">
+        <label class="field-label" for="historico">Historico <span class="required">*</span></label>
+        <div class="field-control">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-select id="historico" formControlName="historico" aria-label="Historico do lancamento">
+              @for (option of historicoOptions; track option) {
+                <mat-option [value]="option">{{ option }}</mat-option>
+              }
+            </mat-select>
+            @if (hasError('historico')) {
+              <mat-error>{{ getFieldError('historico') }}</mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="field-row field-row--checkbox">
+        <span class="field-label"></span>
+        <div class="field-control">
+          <mat-checkbox formControlName="estorno" class="checkbox-field">Estorno</mat-checkbox>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <label class="field-label" for="documento">Documento <span class="required">*</span></label>
+        <div class="field-control">
+          <mat-form-field appearance="outline" class="field-compact field-compact--documento">
+            <input id="documento" matInput formControlName="documento" aria-label="Documento" />
+            @if (hasError('documento')) {
+              <mat-error>{{ getFieldError('documento') }}</mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="field-row field-row--top">
+        <label class="field-label" for="descricao">Descricao</label>
+        <div class="field-control">
+          <mat-form-field appearance="outline" class="field-compact field-compact--descricao">
+            <textarea id="descricao" matInput rows="3" formControlName="descricao" aria-label="Descricao"></textarea>
+            @if (hasError('descricao')) {
+              <mat-error>{{ getFieldError('descricao') }}</mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <label class="field-label" for="situacao">Situacao</label>
+        <div class="field-control">
+          <mat-form-field appearance="outline" class="field-compact field-compact--situacao">
+            <input id="situacao" matInput formControlName="situacao" readonly aria-label="Situacao" />
+          </mat-form-field>
+        </div>
+      </div>
+    </section>
+
+    <section class="form-section">
+      <h3 class="section-title">Documento CSC</h3>
+
+      <div class="field-row field-row--top">
+        <label class="field-label" for="pa">PA <span class="required">*</span></label>
+        <div class="field-control">
+          <mat-form-field appearance="outline" class="field-compact field-compact--situacao">
+            <mat-select id="pa" formControlName="pa" aria-label="PA">
+              @for (pa of paOptions; track pa) {
+                <mat-option [value]="pa">{{ pa }}</mat-option>
+              }
+            </mat-select>
+            @if (hasError('pa')) {
+              <mat-error>{{ getFieldError('pa') }}</mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <label class="field-label" for="idEventoCsc">ID Evento</label>
+        <div class="field-control field-control--inline">
+          <mat-form-field appearance="outline" class="field-compact field-compact--evento">
+            <input
+              id="idEventoCsc"
+              matInput
+              formControlName="idEventoCsc"
+              readonly
+              aria-label="ID Evento"
+            />
+            @if (hasError('idEventoCsc')) {
+              <mat-error>{{ getFieldError('idEventoCsc') }}</mat-error>
+            }
+          </mat-form-field>
+
+          <button mat-icon-button type="button" class="search-button" (click)="onBuscarEventoCsc()" aria-label="Buscar evento CSC">
+            <mat-icon>search</mat-icon>
+          </button>
+
+          <span class="holder-name" [class.holder-name--empty]="!descricaoEventoCsc()">
+            {{ descricaoEventoCsc() || 'Descricao do evento' }}
+          </span>
+        </div>
+      </div>
+
+      <div class="field-row field-row--top">
+        <label class="field-label" for="complHistoricoCsc">Compl. Historico <span class="required">*</span></label>
+        <div class="field-control">
+          <mat-form-field appearance="outline" class="field-compact field-compact--descricao">
+            <textarea
+              id="complHistoricoCsc"
+              matInput
+              rows="3"
+              formControlName="complHistoricoCsc"
+              aria-label="Complemento do historico CSC"
+            ></textarea>
+            @if (hasError('complHistoricoCsc')) {
+              <mat-error>{{ getFieldError('complHistoricoCsc') }}</mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <label class="field-label" for="situacaoCsc">Situacao:</label>
+        <div class="field-control">
+          <mat-form-field appearance="outline" class="field-compact field-compact--situacao-csc">
+            <input id="situacaoCsc" matInput formControlName="situacaoCsc" readonly aria-label="Situacao CSC" />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <label class="field-label" for="idDocCsc">ID Doc CSC:</label>
+        <div class="field-control">
+          <mat-form-field appearance="outline" class="field-compact field-compact--id-doc-csc">
+            <input id="idDocCsc" matInput formControlName="idDocCsc" inputmode="numeric" aria-label="ID Doc CSC" />
+          </mat-form-field>
+        </div>
+      </div>
+    </section>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="modal-footer">
+  <button mat-stroked-button type="button" (click)="onCancelar()">Cancelar</button>
+  <button mat-raised-button color="primary" type="button" (click)="onConfirmar()" [disabled]="form.invalid">Confirmar</button>
+</mat-dialog-actions>

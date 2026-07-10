@@ -1,0 +1,169 @@
+.modal-title {
+  font-size: 18px;
+  font-weight: var(--font-weight-semibold);
+  color: #2d3d45;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.modal-content {
+  width: min(780px, 95vw);
+  max-height: 78vh;
+  overflow: auto;
+}
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.form-section {
+  border: 1px solid var(--color-gray-border);
+  border-radius: var(--border-radius-sm);
+  padding: 14px 16px;
+}
+
+.section-title {
+  margin: 0 0 10px;
+  font-size: 17px;
+  font-weight: var(--font-weight-semibold);
+  color: #2e4b57;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 130px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px 10px;
+  margin-bottom: 10px;
+}
+
+.field-row--top {
+  align-items: start;
+}
+
+.field-row--checkbox {
+  margin-top: 4px;
+  margin-bottom: 2px;
+}
+
+.field-label {
+  font-size: 12px;
+  font-weight: var(--font-weight-semibold);
+  color: #415e6b;
+  line-height: 1.3;
+}
+
+.required {
+  color: #d14545;
+}
+
+.field-control {
+  min-width: 0;
+}
+
+.field-control--inline {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.field-compact {
+  margin-bottom: 0;
+}
+
+.field-compact--conta {
+  width: 190px;
+}
+
+.field-compact--valor,
+.field-compact--documento {
+  width: 190px;
+}
+
+.field-compact--situacao {
+  width: 320px;
+}
+
+.field-compact--situacao-csc {
+  width: 360px;
+}
+
+.field-compact--evento {
+  width: 150px;
+}
+
+.field-compact--id-doc-csc {
+  width: 120px;
+}
+
+.field-compact--descricao {
+  width: min(460px, 100%);
+}
+
+.full-width {
+  width: 100%;
+}
+
+.search-button {
+  margin-top: 6px;
+}
+
+.field-compact ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+  min-height: 20px;
+}
+
+.field-compact ::ng-deep .mat-mdc-form-field-error {
+  white-space: nowrap;
+  overflow: visible;
+  text-overflow: clip;
+  line-height: 1.25;
+}
+
+.holder-name {
+  margin-top: 10px;
+  font-size: 12px;
+  color: #2e4b57;
+  font-weight: var(--font-weight-medium);
+}
+
+.holder-name--empty {
+  color: #7f8b90;
+  font-weight: var(--font-weight-normal);
+}
+
+.checkbox-field {
+  margin-top: 2px;
+}
+
+.modal-footer {
+  padding: var(--spacing-sm) var(--spacing-lg) var(--spacing-md);
+}
+
+@media (max-width: 768px) {
+  .modal-content {
+    width: 95vw;
+    max-height: 82vh;
+  }
+
+  .field-row {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+
+  .field-compact--conta,
+  .field-compact--valor,
+  .field-compact--documento,
+  .field-compact--situacao,
+  .field-compact--situacao-csc,
+  .field-compact--evento,
+  .field-compact--id-doc-csc,
+  .field-compact--descricao {
+    width: 100%;
+  }
+
+  .field-control--inline {
+    flex-wrap: wrap;
+  }
+}

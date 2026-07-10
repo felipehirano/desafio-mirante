@@ -7,6 +7,8 @@ import { LotesActionsComponent, LoteAction } from '../../components/lotes-action
 import { LoteFilter } from '../../../../shared/models/lote-filter.model';
 import { LotesFilterFacade } from '../../services/lotes-filter.facade';
 import { LoteService } from '../../services/lote.service';
+import { MatDialog } from '@angular/material/dialog';
+import { IncluirLancamentoModalComponent } from '../../components/incluir-lancamento-modal/incluir-lancamento-modal.component';
 
 @Component({
   selector: 'app-lotes-page',
@@ -25,7 +27,10 @@ import { LoteService } from '../../services/lote.service';
 export class LotesPageComponent {
   readonly selectedCount = signal<number>(0);
 
-  constructor(readonly facade: LotesFilterFacade) {}
+  constructor(
+    readonly facade: LotesFilterFacade,
+    private readonly dialog: MatDialog
+  ) {}
 
   onFilterChange(filter: LoteFilter): void {
     this.facade.searchLotes(filter);
@@ -36,6 +41,16 @@ export class LotesPageComponent {
   }
 
   onAction(action: LoteAction): void {
+    if (action === 'incluir') {
+      this.dialog.open(IncluirLancamentoModalComponent, {
+        width: 'min(820px, 96vw)',
+        maxHeight: '90vh',
+        autoFocus: false,
+        data: {}
+      });
+      return;
+    }
+
     console.log('Ação executada:', action);
   }
 }
