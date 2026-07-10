@@ -2,7 +2,7 @@
   <button
     class="pagination-btn pagination-arrow"
     (click)="goToFirstPage()"
-    [disabled]="!canGoToPreviousPage()"
+    [disabled]="!canGoToPreviousPage() || isDisabled"
     aria-label="First page">
     &laquo;
   </button>
@@ -10,7 +10,7 @@
   <button
     class="pagination-btn pagination-arrow"
     (click)="goToPreviousPage()"
-    [disabled]="!canGoToPreviousPage()"
+    [disabled]="!canGoToPreviousPage() || isDisabled"
     aria-label="Previous page">
     &lt;
   </button>
@@ -20,6 +20,7 @@
       class="pagination-btn pagination-number"
       [class.active]="page === currentPage"
       (click)="goToPage(page)"
+      [disabled]="isDisabled"
       [attr.aria-label]="'Go to page ' + (page + 1)"
       [attr.aria-current]="page === currentPage ? 'page' : null">
       {{ page + 1 }}
@@ -29,7 +30,7 @@
   <button
     class="pagination-btn pagination-arrow"
     (click)="goToNextPage()"
-    [disabled]="!canGoToNextPage()"
+    [disabled]="!canGoToNextPage() || isDisabled"
     aria-label="Next page">
     &gt;
   </button>
@@ -37,7 +38,7 @@
   <button
     class="pagination-btn pagination-arrow"
     (click)="goToLastPage()"
-    [disabled]="!canGoToNextPage()"
+    [disabled]="!canGoToNextPage() || isDisabled"
     aria-label="Last page">
     &raquo;
   </button>

@@ -12,6 +12,7 @@ export class CustomPaginationComponent implements OnChanges {
   @Input() currentPage = 0;
   @Input() totalPages = 0;
   @Input() visiblePageNumbers: number[] = [];
+  @Input() isDisabled = false;
 
   @Output() pageChange = new EventEmitter<number>();
   @Output() firstPageClick = new EventEmitter<void>();

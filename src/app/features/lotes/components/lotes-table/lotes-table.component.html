@@ -96,6 +96,7 @@
       [currentPage]="facade.currentPage()"
       [totalPages]="facade.totalPages()"
       [visiblePageNumbers]="[]"
+      [isDisabled]="isLoading"
       (pageChange)="onPageChange($event)"
       (firstPageClick)="onFirstPageClick()"
       (lastPageClick)="onLastPageClick()"
