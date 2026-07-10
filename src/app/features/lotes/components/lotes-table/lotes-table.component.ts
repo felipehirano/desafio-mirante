@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -7,6 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { CustomPaginationComponent } from '../../../../shared/components/custom-pagination/custom-pagination.component';
 import { Lote } from '../../../../core/models/lote.model';
+import { LotesTableFacade } from '../../services/lotes-table.facade';
 
 @Component({
   selector: 'app-lotes-table',
@@ -20,10 +21,11 @@ import { Lote } from '../../../../core/models/lote.model';
     MatTooltipModule,
     CustomPaginationComponent
   ],
+  providers: [LotesTableFacade],
   templateUrl: './lotes-table.component.html',
   styleUrls: ['./lotes-table.component.scss']
 })
-export class LotesTableComponent implements OnInit, OnChanges {
+export class LotesTableComponent implements OnChanges {
   @Input() lotes: Lote[] = [];
   @Input() isLoading: boolean = false;
 
@@ -50,94 +52,58 @@ export class LotesTableComponent implements OnInit, OnChanges {
     'dataHoraSituacao'
   ];
 
-  get displayedColumns(): string[] {
-    return this.paginatedData.length > 0 ? this.allColumns : this.emptyColumns;
-  }
-
   readonly skeletonRows = Array(5);
-
   dataSource = new MatTableDataSource<Lote>([]);
-  selectedRows: Set<number> = new Set();
 
-  // Paginação customizada
-  currentPage = 0;
-  pageSize = 5;
-  pageSizeOptions = [5, 10, 20];
-  totalPages = 0;
-  paginatedData: Lote[] = [];
-  visiblePageNumbers: number[] = [];
+  readonly facade = this.tableService;
 
-  ngOnInit(): void {
-    this.updateTableData();
+  get displayedColumns(): string[] {
+    return this.facade.paginatedData().length > 0 ? this.allColumns : this.emptyColumns;
   }
+
+  constructor(private tableService: LotesTableFacade) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['lotes']) {
-      this.updateTableData();
+      this.facade.setLotes(this.lotes);
+      this.dataSource.data = this.lotes;
     }
-  }
-
-  private updateTableData(): void {
-    this.dataSource.data = this.lotes;
-    this.currentPage = 0; // Reset para primeira página
-    this.updatePagination();
-  }
-
-  updatePagination(): void {
-    this.totalPages = Math.ceil(this.dataSource.data.length / this.pageSize);
-    this.updatePaginatedData();
-  }
-
-  updatePaginatedData(): void {
-    const startIndex = this.currentPage * this.pageSize;
-    const endIndex = startIndex + this.pageSize;
-    this.paginatedData = this.dataSource.data.slice(startIndex, endIndex);
   }
 
   onPageChange(page: number): void {
-    this.currentPage = page;
-    this.selectedRows.clear();
-    this.updatePaginatedData();
+    this.facade.changePage(page);
   }
 
   onFirstPageClick(): void {
-    this.onPageChange(0);
+    this.facade.goToFirstPage();
   }
 
   onLastPageClick(): void {
-    this.onPageChange(this.totalPages - 1);
+    this.facade.goToLastPage();
   }
 
   onPreviousPageClick(): void {
-    this.onPageChange(this.currentPage - 1);
+    this.facade.goToPreviousPage();
   }
 
   onNextPageClick(): void {
-    this.onPageChange(this.currentPage + 1);
+    this.facade.goToNextPage();
   }
 
   toggleRow(id: number): void {
-    if (this.selectedRows.has(id)) {
-      this.selectedRows.delete(id);
-    } else {
-      this.selectedRows.add(id);
-    }
+    this.facade.toggleRow(id);
   }
 
   isRowSelected(id: number): boolean {
-    return this.selectedRows.has(id);
+    return this.facade.isRowSelected(id);
   }
 
   toggleAllRows(): void {
-    const allPageSelected = this.paginatedData.every(lote => this.selectedRows.has(lote.id));
-    if (allPageSelected) {
-      this.paginatedData.forEach(lote => this.selectedRows.delete(lote.id));
-    } else {
-      this.paginatedData.forEach(lote => this.selectedRows.add(lote.id));
-    }
+    this.facade.toggleAllRows();
   }
 
   isAllRowsSelected(): boolean {
-    return this.paginatedData.length > 0 && this.paginatedData.every(lote => this.selectedRows.has(lote.id));
+    return this.facade.isAllRowsSelected();
   }
 }
+

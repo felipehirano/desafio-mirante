@@ -5,6 +5,7 @@ import { LotesTableComponent } from '../../components/lotes-table/lotes-table.co
 import { LotesFilterComponent } from '../../components/lotes-filter/lotes-filter.component';
 import { LoteFilter } from '../../../../shared/models/lote-filter.model';
 import { LotesFacade } from '../../../../core/services/lotes.facade';
+import { LoteService } from '../../../../core/services/lote.service';
 
 @Component({
   selector: 'app-lotes-page',
@@ -15,11 +16,11 @@ import { LotesFacade } from '../../../../core/services/lotes.facade';
     LotesTableComponent,
     LotesFilterComponent
   ],
+  providers: [LoteService, LotesFacade],
   templateUrl: './lotes-page.component.html',
   styleUrls: ['./lotes-page.component.scss']
 })
 export class LotesPageComponent {
-  // Injetar o facade para acesso aos sinais
   readonly facade = this.lotesf;
 
   constructor(private lotesf: LotesFacade) {}

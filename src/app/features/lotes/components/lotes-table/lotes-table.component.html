@@ -21,14 +21,14 @@
         </tbody>
       </table>
     } @else {
-      <table mat-table [dataSource]="paginatedData" class="lotes-table">
+      <table mat-table [dataSource]="facade.paginatedData()" class="lotes-table">
 
       <ng-container matColumnDef="checkbox">
         <th mat-header-cell *matHeaderCellDef class="checkbox-column">
-          <mat-checkbox [checked]="isAllRowsSelected()" (change)="toggleAllRows()"></mat-checkbox>
+          <mat-checkbox [checked]="facade.isAllRowsSelected()" (change)="toggleAllRows()"></mat-checkbox>
         </th>
         <td mat-cell *matCellDef="let element" class="checkbox-column">
-          <mat-checkbox [checked]="isRowSelected(element.id)" (change)="toggleRow(element.id)"></mat-checkbox>
+          <mat-checkbox [checked]="facade.isRowSelected(element.id)" (change)="toggleRow(element.id)"></mat-checkbox>
         </td>
       </ng-container>
 
@@ -91,11 +91,11 @@
 
   </div>
 
-  @if (paginatedData.length > 0) {
+  @if (facade.paginatedData().length > 0) {
     <app-custom-pagination
-      [currentPage]="currentPage"
-      [totalPages]="totalPages"
-      [visiblePageNumbers]="visiblePageNumbers"
+      [currentPage]="facade.currentPage()"
+      [totalPages]="facade.totalPages()"
+      [visiblePageNumbers]="[]"
       (pageChange)="onPageChange($event)"
       (firstPageClick)="onFirstPageClick()"
       (lastPageClick)="onLastPageClick()"

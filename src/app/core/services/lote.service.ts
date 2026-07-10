@@ -6,9 +6,7 @@ import { LoteFilter } from '../../shared/models/lote-filter.model';
 import { LOTES_MOCK } from '../mocks/lotes.mock';
 import { applyLoteFilters } from '../../shared/utils';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class LoteService {
 
   getLotes(filter?: LoteFilter): Observable<Lote[]> {
