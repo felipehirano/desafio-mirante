@@ -3,7 +3,10 @@
 
   <mat-card class="content-card">
     <mat-card-content>
-      <app-lotes-table></app-lotes-table>
+      <app-lotes-table
+        [lotes]="facade.lotes()"
+        [isLoading]="facade.isLoading()">
+      </app-lotes-table>
     </mat-card-content>
   </mat-card>
 </div>

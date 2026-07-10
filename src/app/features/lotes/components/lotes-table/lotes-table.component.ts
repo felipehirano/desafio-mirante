@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -7,7 +7,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { CustomPaginationComponent } from '../../../../shared/components/custom-pagination/custom-pagination.component';
 import { Lote } from '../../../../core/models/lote.model';
-import { LoteService } from '../../../../core/services/lote.service';
 
 @Component({
   selector: 'app-lotes-table',
@@ -24,7 +23,10 @@ import { LoteService } from '../../../../core/services/lote.service';
   templateUrl: './lotes-table.component.html',
   styleUrls: ['./lotes-table.component.scss']
 })
-export class LotesTableComponent implements OnInit {
+export class LotesTableComponent implements OnInit, OnChanges {
+  @Input() lotes: Lote[] = [];
+  @Input() isLoading: boolean = false;
+
   readonly allColumns: string[] = [
     'checkbox',
     'id',
@@ -52,7 +54,6 @@ export class LotesTableComponent implements OnInit {
     return this.paginatedData.length > 0 ? this.allColumns : this.emptyColumns;
   }
 
-  isLoading = signal(true);
   readonly skeletonRows = Array(5);
 
   dataSource = new MatTableDataSource<Lote>([]);
@@ -66,19 +67,20 @@ export class LotesTableComponent implements OnInit {
   paginatedData: Lote[] = [];
   visiblePageNumbers: number[] = [];
 
-  constructor(private loteService: LoteService) {}
-
   ngOnInit(): void {
-    this.loadLotes();
+    this.updateTableData();
   }
 
-  loadLotes(): void {
-    this.isLoading.set(true);
-    this.loteService.getLotes().subscribe(lotes => {
-      this.dataSource.data = lotes;
-      this.updatePagination();
-      this.isLoading.set(false);
-    });
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['lotes']) {
+      this.updateTableData();
+    }
+  }
+
+  private updateTableData(): void {
+    this.dataSource.data = this.lotes;
+    this.currentPage = 0; // Reset para primeira página
+    this.updatePagination();
   }
 
   updatePagination(): void {

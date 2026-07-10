@@ -1,5 +1,7 @@
 export interface Lote {
   id: number;
+  instituicaoResp: string;
+  instituicao: string;
   dataEntrada: Date;
   valor: number;
   quantidadeLancamentos: number;

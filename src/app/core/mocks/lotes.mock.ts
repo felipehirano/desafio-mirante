@@ -3,6 +3,8 @@ import { Lote } from '../models/lote.model';
 export const LOTES_MOCK: Lote[] = [
   {
     id: 1,
+    instituicaoResp: 'Instituição A',
+    instituicao: 'Instituição B',
     situacao: 'Aberto',
     dataEntrada: new Date('2026-04-26'),
     valor: 1000,
@@ -13,6 +15,8 @@ export const LOTES_MOCK: Lote[] = [
   },
   {
     id: 2,
+    instituicaoResp: 'Instituição C',
+    instituicao: 'Instituição D',
     situacao: 'Confirmado',
     dataEntrada: new Date('2026-04-28'),
     valor: 5200,
@@ -23,6 +27,8 @@ export const LOTES_MOCK: Lote[] = [
   },
   {
     id: 3,
+    instituicaoResp: 'Instituição E',
+    instituicao: 'Instituição F',
     situacao: 'Aberto',
     dataEntrada: new Date('2026-05-01'),
     valor: 3500,
@@ -33,6 +39,8 @@ export const LOTES_MOCK: Lote[] = [
   },
   {
     id: 4,
+    instituicaoResp: 'Instituição G',
+    instituicao: 'Instituição H',
     situacao: 'Confirmado',
     dataEntrada: new Date('2026-05-03'),
     valor: 7800,
@@ -43,6 +51,8 @@ export const LOTES_MOCK: Lote[] = [
   },
   {
     id: 5,
+    instituicaoResp: 'Instituição I',
+    instituicao: 'Instituição J',
     situacao: 'Rejeitado',
     dataEntrada: new Date('2026-05-05'),
     valor: 2100,
@@ -53,6 +63,8 @@ export const LOTES_MOCK: Lote[] = [
   },
   {
     id: 6,
+    instituicaoResp: 'Instituição K',
+    instituicao: 'Instituição L',
     situacao: 'Aberto',
     dataEntrada: new Date('2026-05-06'),
     valor: 4500,
@@ -63,6 +75,8 @@ export const LOTES_MOCK: Lote[] = [
   },
   {
     id: 7,
+    instituicaoResp: 'Instituição M',
+    instituicao: 'Instituição N',
     situacao: 'Confirmado',
     dataEntrada: new Date('2026-05-08'),
     valor: 6300,
@@ -73,6 +87,8 @@ export const LOTES_MOCK: Lote[] = [
   },
   {
     id: 8,
+    instituicaoResp: 'Instituição O',
+    instituicao: 'Instituição P',
     situacao: 'Aberto',
     dataEntrada: new Date('2026-05-10'),
     valor: 2800,
@@ -83,6 +99,8 @@ export const LOTES_MOCK: Lote[] = [
   },
   {
     id: 9,
+    instituicaoResp: 'Instituição Q',
+    instituicao: 'Instituição R',
     situacao: 'Pendente',
     dataEntrada: new Date('2026-05-12'),
     valor: 5100,
@@ -93,6 +111,8 @@ export const LOTES_MOCK: Lote[] = [
   },
   {
     id: 10,
+    instituicaoResp: 'Instituição S',
+    instituicao: 'Instituição T',
     situacao: 'Confirmado',
     dataEntrada: new Date('2026-05-14'),
     valor: 9200,
@@ -103,6 +123,8 @@ export const LOTES_MOCK: Lote[] = [
   },
   {
     id: 11,
+    instituicaoResp: 'Instituição A',
+    instituicao: 'Instituição B',
     situacao: 'Aberto',
     dataEntrada: new Date('2026-05-16'),
     valor: 3700,
@@ -113,6 +135,8 @@ export const LOTES_MOCK: Lote[] = [
   },
   {
     id: 12,
+    instituicaoResp: 'Instituição A',
+    instituicao: 'Instituição B',
     situacao: 'Rejeitado',
     dataEntrada: new Date('2026-05-18'),
     valor: 1500,
@@ -123,6 +147,8 @@ export const LOTES_MOCK: Lote[] = [
   },
   {
     id: 13,
+    instituicaoResp: 'Instituição A',
+    instituicao: 'Instituição B',
     situacao: 'Confirmado',
     dataEntrada: new Date('2026-05-19'),
     valor: 8100,
@@ -133,6 +159,8 @@ export const LOTES_MOCK: Lote[] = [
   },
   {
     id: 14,
+    instituicaoResp: 'Instituição U',
+    instituicao: 'Instituição V',
     situacao: 'Aberto',
     dataEntrada: new Date('2026-05-21'),
     valor: 4200,
@@ -143,6 +171,8 @@ export const LOTES_MOCK: Lote[] = [
   },
   {
     id: 15,
+    instituicaoResp: 'Instituição A',
+    instituicao: 'Instituição B',
     situacao: 'Pendente',
     dataEntrada: new Date('2026-05-23'),
     valor: 6800,
@@ -153,6 +183,8 @@ export const LOTES_MOCK: Lote[] = [
   },
   {
     id: 16,
+    instituicaoResp: 'Instituição A',
+    instituicao: 'Instituição B',
     situacao: 'Confirmado',
     dataEntrada: new Date('2026-05-25'),
     valor: 7500,
@@ -163,6 +195,8 @@ export const LOTES_MOCK: Lote[] = [
   },
   {
     id: 17,
+    instituicaoResp: 'Instituição A',
+    instituicao: 'Instituição B',
     situacao: 'Aberto',
     dataEntrada: new Date('2026-05-27'),
     valor: 3300,
@@ -173,6 +207,8 @@ export const LOTES_MOCK: Lote[] = [
   },
   {
     id: 18,
+    instituicaoResp: 'Instituição A',
+    instituicao: 'Instituição B',
     situacao: 'Rejeitado',
     dataEntrada: new Date('2026-05-29'),
     valor: 2600,
@@ -183,6 +219,8 @@ export const LOTES_MOCK: Lote[] = [
   },
   {
     id: 19,
+    instituicaoResp: 'Instituição A',
+    instituicao: 'Instituição B',
     situacao: 'Confirmado',
     dataEntrada: new Date('2026-05-30'),
     valor: 9800,
@@ -193,6 +231,8 @@ export const LOTES_MOCK: Lote[] = [
   },
   {
     id: 20,
+    instituicaoResp: 'Instituição A',
+    instituicao: 'Instituição B',
     situacao: 'Aberto',
     dataEntrada: new Date('2026-06-01'),
     valor: 4100,

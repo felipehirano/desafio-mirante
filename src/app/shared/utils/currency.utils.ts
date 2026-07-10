@@ -38,3 +38,15 @@ export function formatCurrencyFromRawValue(rawValue: string): string {
 
   return centavosToFormattedCurrency(parseInt(onlyNumbers, 10));
 }
+
+/**
+ * Converte valor em formato pt-BR para número
+ * @param value - String formatada em pt-BR (ex: "1.234,56")
+ * @returns Número parseado (ex: 1234.56)
+ */
+export function parsePtBRCurrency(value: string): number {
+  if (!value) return 0;
+  // Remove o ponto (separador de milhar) e substitui vírgula por ponto
+  const normalized = value.replace(/\./g, '').replace(',', '.');
+  return parseFloat(normalized);
+}

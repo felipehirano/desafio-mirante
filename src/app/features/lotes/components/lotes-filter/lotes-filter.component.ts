@@ -15,7 +15,13 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { LoteFilter } from '../../../../shared/models/lote-filter.model';
-import { createDateRangeValidator, createDynamicMinDateFilter, createDynamicMaxDateFilter, extractOnlyNumbers, formatCurrencyFromRawValue } from '../../../../shared/utils';
+import {
+  createDateRangeValidator,
+  createDynamicMinDateFilter,
+  createDynamicMaxDateFilter,
+  extractOnlyNumbers,
+  formatCurrencyFromRawValue
+} from '../../../../shared/utils';
 
 
 @Component({
@@ -74,12 +80,7 @@ export class LotesFilterComponent implements OnInit {
   }
 
   toggleExpanded(): void {
-    const wasExpanded = this.isExpanded();
     this.isExpanded.update((value) => !value);
-
-    if (wasExpanded) {
-      this.onReset();
-    }
   }
 
   onSearch(): void {
