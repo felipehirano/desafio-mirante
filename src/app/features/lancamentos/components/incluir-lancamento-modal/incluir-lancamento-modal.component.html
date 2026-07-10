@@ -22,7 +22,13 @@
             }
           </mat-form-field>
 
-          <button mat-icon-button type="button" class="search-button" (click)="onBuscarContaCorrente()" aria-label="Buscar conta corrente">
+          <button
+            mat-icon-button
+            type="button"
+            class="search-button"
+            (click)="onBuscarContaCorrente()"
+            [disabled]="contaCorrenteSearching()"
+            aria-label="Buscar conta corrente">
             <mat-icon>search</mat-icon>
           </button>
 

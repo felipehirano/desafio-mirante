@@ -7,6 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
 import { Inject } from '@angular/core';
+import { SimplePaginationComponent } from '../../../../shared/components';
 import { CONTAS_CORRENTES_MOCK, ContaCorrenteMock } from '../../mocks/contas-correntes.mock';
 
 interface ContaCorrenteSearchDialogData {
@@ -23,7 +24,8 @@ interface ContaCorrenteSearchDialogData {
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatTableModule
+    MatTableModule,
+    SimplePaginationComponent
   ],
   templateUrl: './conta-corrente-search-modal.component.html',
   styleUrls: ['./conta-corrente-search-modal.component.scss']

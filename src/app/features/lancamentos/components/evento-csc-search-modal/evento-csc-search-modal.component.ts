@@ -7,6 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
 import { Inject } from '@angular/core';
+import { SimplePaginationComponent } from '../../../../shared/components';
 import { EVENTOS_CSC_MOCK } from '../../mocks/eventos-csc.mock';
 import { EventoCsc } from '../../models/evento-csc.model';
 
@@ -24,7 +25,8 @@ interface EventoCscSearchDialogData {
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatTableModule
+    MatTableModule,
+    SimplePaginationComponent
   ],
   templateUrl: './evento-csc-search-modal.component.html',
   styleUrls: ['./evento-csc-search-modal.component.scss']

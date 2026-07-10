@@ -63,6 +63,7 @@ export class IncluirLancamentoModalComponent {
   readonly paOptions: string[] = ['Cooperativa', 'PA 0001', 'PA 0002'];
   readonly titularEncontrado = signal<string>('');
   readonly descricaoEventoCsc = signal<string>('');
+  readonly contaCorrenteSearching = signal(false);
   readonly contaCorrenteValidada = signal(false);
   readonly submitAttempted = signal(false);
   readonly requiredFieldOrder: string[] = [
@@ -99,6 +100,10 @@ export class IncluirLancamentoModalComponent {
   }
 
   onBuscarContaCorrente(): void {
+    if (this.contaCorrenteSearching()) {
+      return;
+    }
+
     const dialogRef = this.dialog.open(ContaCorrenteSearchModalComponent, {
       width: 'min(900px, 96vw)',
       maxHeight: '88vh',
@@ -116,6 +121,7 @@ export class IncluirLancamentoModalComponent {
       this.clearContaCorrenteLookupError();
       this.form.updateValueAndValidity();
       this.contaCorrenteValidada.set(true);
+      this.contaCorrenteSearching.set(false);
       this.titularEncontrado.set(selectedConta.titular);
     });
   }
@@ -124,6 +130,7 @@ export class IncluirLancamentoModalComponent {
     applyOnlyNumbersInputWithControl(event, this.form);
     const contaCorrente = String(this.form.get('contaCorrente')?.value ?? '').trim();
     this.contaCorrenteValidada.set(false);
+    this.contaCorrenteSearching.set(true);
     this.titularEncontrado.set('');
     this.contaCorrenteSearchSubject.next(contaCorrente);
   }
@@ -227,6 +234,7 @@ export class IncluirLancamentoModalComponent {
 
   private resolveContaCorrente(contaCorrente: string): void {
     if (!contaCorrente) {
+      this.contaCorrenteSearching.set(false);
       this.contaCorrenteValidada.set(false);
       this.titularEncontrado.set('');
       this.clearContaCorrenteLookupError();
@@ -235,12 +243,14 @@ export class IncluirLancamentoModalComponent {
 
     const contaEncontrada = CONTAS_CORRENTES_MOCK.find(conta => conta.numero === contaCorrente);
     if (contaEncontrada) {
+      this.contaCorrenteSearching.set(false);
       this.contaCorrenteValidada.set(true);
       this.titularEncontrado.set(contaEncontrada.titular);
       this.clearContaCorrenteLookupError();
       return;
     }
 
+    this.contaCorrenteSearching.set(false);
     this.contaCorrenteValidada.set(false);
     this.titularEncontrado.set('');
     this.setContaCorrenteLookupError();

@@ -1,0 +1,11 @@
+<div class="simple-pagination" role="navigation" aria-label="Paginação simples">
+  <button mat-stroked-button type="button" (click)="onPreviousClick()" [disabled]="isPreviousDisabled">
+    Anterior
+  </button>
+
+  <span class="simple-pagination__page-label">Pagina {{ currentPageLabel }}</span>
+
+  <button mat-stroked-button type="button" (click)="onNextClick()" [disabled]="isNextDisabled">
+    Proxima
+  </button>
+</div>

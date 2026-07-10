@@ -55,11 +55,12 @@
     </table>
   </div>
 
-  <div class="pagination-row">
-    <button mat-stroked-button type="button" (click)="onPaginaAnterior()" [disabled]="currentPage() === 0">Anterior</button>
-    <span class="page-label">Pagina {{ currentPage() + 1 }}</span>
-    <button mat-stroked-button type="button" (click)="onPaginaProxima()" [disabled]="currentPage() >= totalPages() - 1">Proxima</button>
-  </div>
+  <app-simple-pagination
+    [currentPage]="currentPage()"
+    [totalPages]="totalPages()"
+    (previousClick)="onPaginaAnterior()"
+    (nextClick)="onPaginaProxima()">
+  </app-simple-pagination>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end" class="search-footer">
