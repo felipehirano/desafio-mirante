@@ -1,0 +1,57 @@
+<div class="actions-container" [class.actions-container--split]="isSplitLayout" role="toolbar" [attr.aria-label]="ariaLabel">
+  @if (leftActions.length > 0) {
+    <div class="actions-group actions-group--left">
+      @for (actionItem of leftActions; track actionItem.id) {
+        @if (isPrimaryAction(actionItem)) {
+          <button
+            mat-raised-button
+            color="primary"
+            type="button"
+            class="action-button action-button--primary"
+            (click)="onAction(actionItem.id)"
+            [disabled]="isActionDisabled(actionItem)"
+            [attr.aria-label]="getActionAriaLabel(actionItem)">
+            {{ actionItem.label }}
+          </button>
+        } @else {
+          <button
+            mat-stroked-button
+            type="button"
+            class="action-button"
+            (click)="onAction(actionItem.id)"
+            [disabled]="isActionDisabled(actionItem)"
+            [attr.aria-label]="getActionAriaLabel(actionItem)">
+            {{ actionItem.label }}
+          </button>
+        }
+      }
+    </div>
+  }
+
+  <div class="actions-group actions-group--right">
+    @for (actionItem of rightActions; track actionItem.id) {
+      @if (isPrimaryAction(actionItem)) {
+        <button
+          mat-raised-button
+          color="primary"
+          type="button"
+          class="action-button action-button--primary"
+          (click)="onAction(actionItem.id)"
+          [disabled]="isActionDisabled(actionItem)"
+          [attr.aria-label]="getActionAriaLabel(actionItem)">
+          {{ actionItem.label }}
+        </button>
+      } @else {
+        <button
+          mat-stroked-button
+          type="button"
+          class="action-button"
+          (click)="onAction(actionItem.id)"
+          [disabled]="isActionDisabled(actionItem)"
+          [attr.aria-label]="getActionAriaLabel(actionItem)">
+          {{ actionItem.label }}
+        </button>
+      }
+    }
+  </div>
+</div>

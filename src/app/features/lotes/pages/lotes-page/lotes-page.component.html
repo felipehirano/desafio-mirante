@@ -25,7 +25,12 @@
       </div>
 
       <div class="actions-section">
-        <app-lotes-actions [selectedCount]="selectedCount()" (action)="onAction($event)"></app-lotes-actions>
+        <app-actions
+          [selectedCount]="selectedCount()"
+          [actions]="lotesActions"
+          [ariaLabel]="'Ações de lotes'"
+          (action)="onAction($event)">
+        </app-actions>
       </div>
 
       <div class="table-section">

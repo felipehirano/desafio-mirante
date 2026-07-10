@@ -9,7 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDialog } from '@angular/material/dialog';
-import { Inject } from '@angular/core';
+import { ElementRef, Inject, inject } from '@angular/core';
 import {
   applyCurrencyInput,
   parsePtBRCurrency
@@ -41,6 +41,8 @@ interface IncluirLancamentoModalData {
   styleUrls: ['./incluir-lancamento-modal.component.scss']
 })
 export class IncluirLancamentoModalComponent {
+  private readonly hostElement = inject(ElementRef<HTMLElement>);
+
   readonly historicoOptions: string[] = [
     'Lancamento Manual',
     'Ajuste de Conta',
@@ -51,9 +53,17 @@ export class IncluirLancamentoModalComponent {
   readonly titularEncontrado = signal<string>('');
   readonly descricaoEventoCsc = signal<string>('');
   readonly submitAttempted = signal(false);
+  readonly requiredFieldOrder: string[] = [
+    'contaCorrente',
+    'valor',
+    'historico',
+    'documento',
+    'pa',
+    'complHistoricoCsc'
+  ];
 
   readonly form = this.fb.group({
-    contaCorrente: [{ value: '', disabled: true }, [Validators.required, Validators.pattern(/^\d+$/)]],
+    contaCorrente: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
     valor: ['', [Validators.required, this.positiveCurrencyValidator()]],
     historico: ['', [Validators.required]],
     estorno: [false],
@@ -88,6 +98,7 @@ export class IncluirLancamentoModalComponent {
       }
 
       this.form.patchValue({ contaCorrente: selectedConta.numero });
+      this.form.get('contaCorrente')?.markAsTouched();
       this.titularEncontrado.set(selectedConta.titular);
     });
   }
@@ -156,19 +167,43 @@ export class IncluirLancamentoModalComponent {
     return !!(control?.errors && (control.touched || control.dirty || this.submitAttempted()));
   }
 
+  get isConfirmDisabled(): boolean {
+    const contaCorrente = (this.form.getRawValue().contaCorrente ?? '').trim();
+    return contaCorrente.length === 0;
+  }
+
   private validateFormForSubmit(): boolean {
     this.submitAttempted.set(true);
+    this.form.markAllAsTouched();
     const raw = this.form.getRawValue();
 
-    if (!raw.contaCorrente) {
+    if (!raw.contaCorrente?.trim()) {
+      this.focusFirstInvalidField();
       return false;
     }
 
     if (this.form.invalid) {
-      this.form.markAllAsTouched();
+      this.focusFirstInvalidField();
       return false;
     }
+
     return true;
+  }
+
+  private focusFirstInvalidField(): void {
+    for (const fieldName of this.requiredFieldOrder) {
+      const control = this.form.get(fieldName);
+      if (!control || control.disabled || control.valid) {
+        continue;
+      }
+
+      const controlElement =
+        (this.hostElement.nativeElement.querySelector(`[formControlName="${fieldName}"]`) as HTMLElement | null) ??
+        (this.hostElement.nativeElement.querySelector(`#${fieldName}`) as HTMLElement | null);
+
+      controlElement?.focus();
+      return;
+    }
   }
 
   private createLancamentoFromForm(): Lancamento {

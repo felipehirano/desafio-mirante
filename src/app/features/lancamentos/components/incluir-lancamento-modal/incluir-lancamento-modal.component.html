@@ -196,5 +196,5 @@
 
 <mat-dialog-actions align="end" class="modal-footer">
   <button mat-stroked-button type="button" (click)="onCancelar()">Cancelar</button>
-  <button mat-raised-button color="primary" type="button" (click)="onConfirmar()" [disabled]="form.invalid">Confirmar</button>
+  <button mat-raised-button color="primary" type="button" (click)="onConfirmar()" [disabled]="isConfirmDisabled">Confirmar</button>
 </mat-dialog-actions>

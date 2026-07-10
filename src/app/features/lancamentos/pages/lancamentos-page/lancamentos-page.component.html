@@ -53,27 +53,13 @@
         </table>
       </div>
 
-      <div class="lancamentos-actions-container" role="toolbar" aria-label="Ações de lançamentos">
-        <div class="lancamentos-actions__left">
-          <button mat-stroked-button type="button" class="action-button" (click)="onAction('duplicar')" [disabled]="!isSingleSelected">
-            DUPLICAR
-          </button>
-        </div>
-
-        <div class="lancamentos-actions__right">
-          <button mat-stroked-button type="button" class="action-button" (click)="onAction('visualizar')" [disabled]="!isSingleSelected">
-            VISUALIZAR
-          </button>
-          <button mat-raised-button color="primary" type="button" class="action-button action-button--primary" (click)="onAction('incluir')">
-            INCLUIR
-          </button>
-          <button mat-stroked-button type="button" class="action-button" (click)="onAction('alterar')" [disabled]="!isSingleSelected">
-            ALTERAR
-          </button>
-          <button mat-stroked-button type="button" class="action-button" (click)="onAction('excluir')" [disabled]="!isSingleSelected">
-            EXCLUIR
-          </button>
-        </div>
+      <div class="lancamentos-actions-section">
+        <app-actions
+          [selectedCount]="selectedLancamentoId ? 1 : 0"
+          [actions]="lancamentosActions"
+          [ariaLabel]="'Ações de lançamentos'"
+          (action)="onAction($event)">
+        </app-actions>
       </div>
     </mat-card-content>
   </mat-card>
