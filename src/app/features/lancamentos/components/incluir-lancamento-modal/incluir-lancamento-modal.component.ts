@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, signal } from '@angular/core';
-import { AbstractControl, FormBuilder, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
@@ -12,6 +12,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { ElementRef, Inject, inject } from '@angular/core';
 import {
   applyCurrencyInput,
+  createPositiveCurrencyValidator,
+  focusFirstInvalidFormField,
+  getFormFieldErrorMessageWithState,
+  hasFormFieldErrorWithState,
+  isFormFieldBlank,
   parsePtBRCurrency
 } from '../../../../shared/utils';
 import { ContaCorrenteMock } from '../../mocks/contas-correntes.mock';
@@ -64,7 +69,7 @@ export class IncluirLancamentoModalComponent {
 
   readonly form = this.fb.group({
     contaCorrente: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
-    valor: ['', [Validators.required, this.positiveCurrencyValidator()]],
+    valor: ['', [Validators.required, createPositiveCurrencyValidator()]],
     historico: ['', [Validators.required]],
     estorno: [false],
     documento: ['', [Validators.required, Validators.maxLength(30)]],
@@ -99,6 +104,8 @@ export class IncluirLancamentoModalComponent {
 
       this.form.patchValue({ contaCorrente: selectedConta.numero });
       this.form.get('contaCorrente')?.markAsTouched();
+      this.form.get('contaCorrente')?.updateValueAndValidity();
+      this.form.updateValueAndValidity();
       this.titularEncontrado.set(selectedConta.titular);
     });
   }
@@ -138,72 +145,32 @@ export class IncluirLancamentoModalComponent {
   }
 
   getFieldError(fieldName: string): string {
-    const control = this.form.get(fieldName);
-    if (!control || !(control.touched || control.dirty || this.submitAttempted())) {
-      return '';
-    }
-
-    if (control.errors?.['required']) {
-      return 'Campo obrigatorio.';
-    }
-
-    if (control.errors?.['pattern']) {
-      return 'Informe apenas numeros.';
-    }
-
-    if (control.errors?.['positiveValue']) {
-      return 'Informe um valor maior que zero.';
-    }
-
-    if (control.errors?.['maxlength']) {
-      return `Maximo de ${control.errors['maxlength'].requiredLength} caracteres.`;
-    }
-
-    return 'Campo invalido.';
+    return getFormFieldErrorMessageWithState(this.form, fieldName, this.submitAttempted());
   }
 
   hasError(fieldName: string): boolean {
-    const control = this.form.get(fieldName);
-    return !!(control?.errors && (control.touched || control.dirty || this.submitAttempted()));
+    return hasFormFieldErrorWithState(this.form, fieldName, this.submitAttempted());
   }
 
   get isConfirmDisabled(): boolean {
-    const contaCorrente = (this.form.getRawValue().contaCorrente ?? '').trim();
-    return contaCorrente.length === 0;
+    return this.form.invalid || isFormFieldBlank(this.form, 'contaCorrente');
   }
 
   private validateFormForSubmit(): boolean {
     this.submitAttempted.set(true);
     this.form.markAllAsTouched();
-    const raw = this.form.getRawValue();
 
-    if (!raw.contaCorrente?.trim()) {
-      this.focusFirstInvalidField();
+    if (isFormFieldBlank(this.form, 'contaCorrente')) {
+      focusFirstInvalidFormField(this.hostElement.nativeElement, this.form, this.requiredFieldOrder);
       return false;
     }
 
     if (this.form.invalid) {
-      this.focusFirstInvalidField();
+      focusFirstInvalidFormField(this.hostElement.nativeElement, this.form, this.requiredFieldOrder);
       return false;
     }
 
     return true;
-  }
-
-  private focusFirstInvalidField(): void {
-    for (const fieldName of this.requiredFieldOrder) {
-      const control = this.form.get(fieldName);
-      if (!control || control.disabled || control.valid) {
-        continue;
-      }
-
-      const controlElement =
-        (this.hostElement.nativeElement.querySelector(`[formControlName="${fieldName}"]`) as HTMLElement | null) ??
-        (this.hostElement.nativeElement.querySelector(`#${fieldName}`) as HTMLElement | null);
-
-      controlElement?.focus();
-      return;
-    }
   }
 
   private createLancamentoFromForm(): Lancamento {
@@ -219,17 +186,6 @@ export class IncluirLancamentoModalComponent {
       documento: raw.documento ?? '',
       descricao: raw.descricao ?? '',
       situacao: raw.situacao ?? 'Pendente'
-    };
-  }
-
-  private positiveCurrencyValidator(): ValidatorFn {
-    return (control: AbstractControl): ValidationErrors | null => {
-      const value = parsePtBRCurrency(control.value ?? '');
-      if (!control.value) {
-        return null;
-      }
-
-      return value > 0 ? null : { positiveValue: true };
     };
   }
 
