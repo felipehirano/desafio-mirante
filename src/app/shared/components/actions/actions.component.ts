@@ -13,6 +13,7 @@ export interface ActionButtonConfig {
   requiresSingleSelection?: boolean;
   ariaLabel?: string;
   ariaLabelWhenDisabled?: string;
+  disabled?: boolean;
 }
 
 @Component({
@@ -45,7 +46,7 @@ export class ActionsComponent {
   }
 
   isActionDisabled(action: ActionButtonConfig): boolean {
-    return !!action.requiresSingleSelection && !this.isSingleSelected;
+    return !!action.requiresSingleSelection && !this.isSingleSelected || !!action.disabled;
   }
 
   isPrimaryAction(action: ActionButtonConfig): boolean {

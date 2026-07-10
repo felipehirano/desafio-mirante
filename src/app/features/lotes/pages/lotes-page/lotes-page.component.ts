@@ -26,10 +26,33 @@ export class LotesPageComponent {
   readonly selectedCount = signal<number>(0);
 
   readonly lotesActions: ActionButtonConfig[] = [
-    { id: 'confirmar', label: 'CONFIRMAR', ariaLabel: 'Confirmar lote' },
-    { id: 'enviar', label: 'ENVIAR', ariaLabel: 'Enviar lote' },
-    { id: 'visualizar-justificativa', label: 'VISUALIZAR JUSTIFICATIVA', ariaLabel: 'Visualizar justificativa do lote' },
-    { id: 'incluir', label: 'INCLUIR', variant: 'primary', ariaLabel: 'Incluir novo lote' },
+    {
+      id: 'confirmar',
+      label: 'CONFIRMAR',
+      ariaLabel: 'Confirmar lote',
+      disabled: true,
+      ariaLabelWhenDisabled: 'Confirmar lote (selecione um lote)'
+    },
+    {
+      id: 'enviar',
+      label: 'ENVIAR',
+      ariaLabel: 'Enviar lote',
+      disabled: true,
+      ariaLabelWhenDisabled: 'Enviar lote (selecione um lote)'
+    },
+    {
+      id: 'visualizar-justificativa',
+      label: 'VISUALIZAR JUSTIFICATIVA',
+      ariaLabel: 'Visualizar justificativa do lote',
+      disabled: true,
+      ariaLabelWhenDisabled: 'Visualizar justificativa do lote (selecione um lote)'
+    },
+    {
+      id: 'incluir',
+      label: 'INCLUIR',
+      variant: 'primary',
+      ariaLabel: 'Incluir novo lote'
+    },
     {
       id: 'alterar',
       label: 'ALTERAR',
