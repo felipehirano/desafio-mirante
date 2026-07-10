@@ -6,35 +6,37 @@
 
 .content-card {
   box-shadow: var(--shadow-sm);
-
-  mat-card-content {
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-  }
 }
 
-/* Responsive adjustments */
+.card-content {
+  padding: var(--spacing-xxl) !important;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg) !important;
+  height: 100%;
+}
+
+.filter-section {
+  flex-shrink: 0;
+}
+
+.actions-section {
+  flex-shrink: 0;
+  padding-top: var(--spacing-md, 12px);
+}
+
+.table-section {
+  flex: 1;
+  overflow-y: auto;
+}
+
 @media (max-width: 768px) {
   .lotes-page {
     padding: var(--spacing-lg);
   }
 
-  .page-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--spacing-lg);
-
-    .header-content {
-      h1 {
-        font-size: var(--font-size-xl);
-      }
-    }
-
-    .btn-novo {
-      width: 100%;
-      justify-content: center;
-    }
+  .card-content {
+    padding: var(--spacing-md, 12px);
+    gap: var(--spacing-md, 12px);
   }
 }

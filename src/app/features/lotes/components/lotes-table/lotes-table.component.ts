@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -28,6 +28,7 @@ import { LotesTableFacade } from '../../services/lotes-table.facade';
 export class LotesTableComponent implements OnChanges {
   @Input() lotes: Lote[] = [];
   @Input() isLoading: boolean = false;
+  @Output() selectionChange = new EventEmitter<number>();
 
   readonly allColumns: string[] = [
     'checkbox',
@@ -61,7 +62,11 @@ export class LotesTableComponent implements OnChanges {
     return this.facade.paginatedData().length > 0 ? this.allColumns : this.emptyColumns;
   }
 
-  constructor(private tableService: LotesTableFacade) {}
+  constructor(private tableService: LotesTableFacade) {
+    effect(() => {
+      this.selectionChange.emit(this.facade.selectedCount());
+    });
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['lotes']) {

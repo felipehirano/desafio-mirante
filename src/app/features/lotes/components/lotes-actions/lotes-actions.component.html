@@ -1,0 +1,44 @@
+<div class="lotes-actions-container">
+  <button mat-stroked-button (click)="onAction('confirmar')" class="action-button">
+    CONFIRMAR
+  </button>
+
+  <button mat-stroked-button (click)="onAction('enviar')" class="action-button">
+    ENVIAR
+  </button>
+
+  <button mat-stroked-button (click)="onAction('visualizar-justificativa')" class="action-button">
+    VISUALIZAR JUSTIFICATIVA
+  </button>
+
+  <button mat-raised-button color="primary" (click)="onAction('incluir')" class="action-button action-button--primary">
+    INCLUIR
+  </button>
+
+  <button
+    mat-stroked-button
+    (click)="onAction('alterar')"
+    [disabled]="!isSingleSelected"
+    [matTooltip]="!isSingleSelected ? 'Selecione exatamente um lote' : ''"
+    class="action-button">
+    ALTERAR
+  </button>
+
+  <button
+    mat-stroked-button
+    (click)="onAction('excluir')"
+    [disabled]="!isSingleSelected"
+    [matTooltip]="!isSingleSelected ? 'Selecione exatamente um lote' : ''"
+    class="action-button">
+    EXCLUIR
+  </button>
+
+  <button
+    mat-stroked-button
+    (click)="onAction('visualizar')"
+    [disabled]="!isSingleSelected"
+    [matTooltip]="!isSingleSelected ? 'Selecione exatamente um lote' : ''"
+    class="action-button">
+    VISUALIZAR
+  </button>
+</div>

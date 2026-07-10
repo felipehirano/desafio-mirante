@@ -1,13 +1,22 @@
 <div class="lotes-page">
-  <app-lotes-filter (filterChange)="onFilterChange($event)"></app-lotes-filter>
-
   <mat-card class="content-card">
-    <mat-card-content>
-      <app-lotes-table
-        [lotes]="facade.lotes()"
-        [isLoading]="facade.isLoading()">
-      </app-lotes-table>
+    <mat-card-content class="card-content">
+      <div class="filter-section">
+        <app-lotes-filter [isLoading]="facade.isLoading()" (filterChange)="onFilterChange($event)"></app-lotes-filter>
+      </div>
+
+      <div class="actions-section">
+        <app-lotes-actions [selectedCount]="selectedCount()" (action)="onAction($event)"></app-lotes-actions>
+      </div>
+
+      <div class="table-section">
+        <app-lotes-table
+          [lotes]="facade.lotes()"
+          [isLoading]="facade.isLoading()"
+          (selectionChange)="onSelectionChange($event)"
+        >
+        </app-lotes-table>
+      </div>
     </mat-card-content>
   </mat-card>
 </div>
-

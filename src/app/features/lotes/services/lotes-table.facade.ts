@@ -23,6 +23,8 @@ export class LotesTableFacade {
     return this.lotesState().slice(startIndex, endIndex);
   });
 
+  readonly selectedCount = computed(() => this.selectedRowsState().size);
+
   readonly isAllRowsSelected = computed(() => {
     const paginatedData = this.paginatedData();
     return paginatedData.length > 0 && paginatedData.every(lote => this.selectedRowsState().has(lote.id));

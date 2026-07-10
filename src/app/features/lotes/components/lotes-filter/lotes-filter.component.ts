@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, signal } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   ReactiveFormsModule,
@@ -44,6 +44,7 @@ import {
 })
 export class LotesFilterComponent implements OnInit {
   @Output() filterChange = new EventEmitter<LoteFilter>();
+  @Input() isLoading: boolean = false;
 
   filterForm!: FormGroup;
   isExpanded = signal(true);
@@ -109,11 +110,22 @@ export class LotesFilterComponent implements OnInit {
 
   formatCurrency(event: Event): void {
     const input = event.target as HTMLInputElement;
+    const onlyDigits = input.value.replace(/\D/g, '');
+
+    if (parseInt(onlyDigits, 10) === 0) {
+      input.value = '';
+      const fieldName = input.getAttribute('formControlName');
+      if (fieldName) {
+        this.filterForm.get(fieldName)?.setValue('', { emitEvent: false });
+      }
+      return;
+    }
+
     const formatted = formatCurrencyFromRawValue(input.value);
     input.value = formatted;
 
     const fieldName = input.getAttribute('formControlName');
-    if (fieldName && formatted) {
+    if (fieldName) {
       this.filterForm.get(fieldName)?.setValue(formatted, { emitEvent: false });
     }
   }

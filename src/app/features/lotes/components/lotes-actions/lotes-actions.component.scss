@@ -1,0 +1,56 @@
+.lotes-actions-container {
+  display: flex;
+  gap: var(--spacing-md, 12px);
+  flex-wrap: wrap;
+  padding: var(--spacing-md, 12px) 0;
+  background-color: #f5f5f5;
+  padding: var(--spacing-md, 12px) var(--spacing-lg, 16px);
+  border-radius: 4px;
+}
+
+.action-button {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  min-width: auto;
+  padding: 8px 16px;
+
+  &:hover {
+    transition: all 0.2s ease;
+  }
+
+  &--primary {
+    background-color: #0d5b5b;
+    color: white;
+
+    &:hover {
+      background-color: #094646;
+      box-shadow: 0 4px 8px rgba(13, 91, 91, 0.3);
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  .lotes-actions-container {
+    gap: var(--spacing-sm, 8px);
+  }
+
+  .action-button {
+    font-size: 11px;
+    padding: 6px 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .lotes-actions-container {
+    gap: var(--spacing-xs, 4px);
+  }
+
+  .action-button {
+    font-size: 10px;
+    padding: 4px 8px;
+    flex: 1;
+    min-width: 60px;
+  }
+}

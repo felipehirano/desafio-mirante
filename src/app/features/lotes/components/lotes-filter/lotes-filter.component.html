@@ -185,7 +185,7 @@
 
       <!-- Action Buttons -->
       <div class="filter-actions">
-        <button type="button" mat-stroked-button (click)="onReset()">
+        <button type="button" mat-stroked-button (click)="onReset()" [disabled]="isLoading">
           Limpar Filtros
         </button>
         <button
@@ -193,8 +193,13 @@
           mat-raised-button
           color="primary"
           (click)="onSearch()"
+          [disabled]="isLoading"
         >
-          Pesquisar
+          @if (isLoading) {
+            <span class="btn-loading">Pesquisando...</span>
+          } @else {
+            Pesquisar
+          }
         </button>
       </div>
     </form>
