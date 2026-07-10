@@ -87,6 +87,10 @@ export function getFormFieldErrorMessageWithState(
     return 'Informe um valor maior que zero.';
   }
 
+  if (control.errors['contaCorrenteNotFound']) {
+    return 'Conta corrente nao encontrada.';
+  }
+
   if (control.errors['maxlength']) {
     return `Maximo de ${control.errors['maxlength'].requiredLength} caracteres.`;
   }

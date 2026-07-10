@@ -13,7 +13,7 @@
               id="contaCorrente"
               matInput
               formControlName="contaCorrente"
-              readonly
+              (input)="onContaCorrenteInput($event)"
               placeholder="Numero"
               aria-label="Conta corrente"
             />

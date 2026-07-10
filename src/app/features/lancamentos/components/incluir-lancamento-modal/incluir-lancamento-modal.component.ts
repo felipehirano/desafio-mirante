@@ -9,8 +9,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDialog } from '@angular/material/dialog';
-import { ElementRef, Inject, inject } from '@angular/core';
+import { DestroyRef, ElementRef, Inject, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import {
+  applyOnlyNumbersInputWithControl,
   applyCurrencyInput,
   createPositiveCurrencyValidator,
   focusFirstInvalidFormField,
@@ -19,7 +23,7 @@ import {
   isFormFieldBlank,
   parsePtBRCurrency
 } from '../../../../shared/utils';
-import { ContaCorrenteMock } from '../../mocks/contas-correntes.mock';
+import { CONTAS_CORRENTES_MOCK, ContaCorrenteMock } from '../../mocks/contas-correntes.mock';
 import { ContaCorrenteSearchModalComponent } from '../conta-corrente-search-modal/conta-corrente-search-modal.component';
 import { EventoCscSearchModalComponent } from '../evento-csc-search-modal/evento-csc-search-modal.component';
 import { Lancamento } from '../../models/lancamento.model';
@@ -46,7 +50,9 @@ interface IncluirLancamentoModalData {
   styleUrls: ['./incluir-lancamento-modal.component.scss']
 })
 export class IncluirLancamentoModalComponent {
+  private readonly destroyRef = inject(DestroyRef);
   private readonly hostElement = inject(ElementRef<HTMLElement>);
+  private readonly contaCorrenteSearchSubject = new Subject<string>();
 
   readonly historicoOptions: string[] = [
     'Lancamento Manual',
@@ -57,6 +63,7 @@ export class IncluirLancamentoModalComponent {
   readonly paOptions: string[] = ['Cooperativa', 'PA 0001', 'PA 0002'];
   readonly titularEncontrado = signal<string>('');
   readonly descricaoEventoCsc = signal<string>('');
+  readonly contaCorrenteValidada = signal(false);
   readonly submitAttempted = signal(false);
   readonly requiredFieldOrder: string[] = [
     'contaCorrente',
@@ -87,7 +94,9 @@ export class IncluirLancamentoModalComponent {
     private readonly dialog: MatDialog,
     private readonly dialogRef: MatDialogRef<IncluirLancamentoModalComponent, Lancamento>,
     @Inject(MAT_DIALOG_DATA) readonly data: IncluirLancamentoModalData
-  ) {}
+  ) {
+    this.initializeContaCorrenteSearch();
+  }
 
   onBuscarContaCorrente(): void {
     const dialogRef = this.dialog.open(ContaCorrenteSearchModalComponent, {
@@ -104,10 +113,19 @@ export class IncluirLancamentoModalComponent {
 
       this.form.patchValue({ contaCorrente: selectedConta.numero });
       this.form.get('contaCorrente')?.markAsTouched();
-      this.form.get('contaCorrente')?.updateValueAndValidity();
+      this.clearContaCorrenteLookupError();
       this.form.updateValueAndValidity();
+      this.contaCorrenteValidada.set(true);
       this.titularEncontrado.set(selectedConta.titular);
     });
+  }
+
+  onContaCorrenteInput(event: Event): void {
+    applyOnlyNumbersInputWithControl(event, this.form);
+    const contaCorrente = String(this.form.get('contaCorrente')?.value ?? '').trim();
+    this.contaCorrenteValidada.set(false);
+    this.titularEncontrado.set('');
+    this.contaCorrenteSearchSubject.next(contaCorrente);
   }
 
   onValorInput(event: Event): void {
@@ -153,7 +171,7 @@ export class IncluirLancamentoModalComponent {
   }
 
   get isConfirmDisabled(): boolean {
-    return this.form.invalid || isFormFieldBlank(this.form, 'contaCorrente');
+    return this.form.invalid || isFormFieldBlank(this.form, 'contaCorrente') || !this.contaCorrenteValidada();
   }
 
   private validateFormForSubmit(): boolean {
@@ -161,6 +179,12 @@ export class IncluirLancamentoModalComponent {
     this.form.markAllAsTouched();
 
     if (isFormFieldBlank(this.form, 'contaCorrente')) {
+      focusFirstInvalidFormField(this.hostElement.nativeElement, this.form, this.requiredFieldOrder);
+      return false;
+    }
+
+    if (!this.contaCorrenteValidada()) {
+      this.setContaCorrenteLookupError();
       focusFirstInvalidFormField(this.hostElement.nativeElement, this.form, this.requiredFieldOrder);
       return false;
     }
@@ -187,6 +211,63 @@ export class IncluirLancamentoModalComponent {
       descricao: raw.descricao ?? '',
       situacao: raw.situacao ?? 'Pendente'
     };
+  }
+
+  private initializeContaCorrenteSearch(): void {
+    this.contaCorrenteSearchSubject
+      .pipe(
+        debounceTime(400),
+        distinctUntilChanged(),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe(contaCorrente => {
+        this.resolveContaCorrente(contaCorrente);
+      });
+  }
+
+  private resolveContaCorrente(contaCorrente: string): void {
+    if (!contaCorrente) {
+      this.contaCorrenteValidada.set(false);
+      this.titularEncontrado.set('');
+      this.clearContaCorrenteLookupError();
+      return;
+    }
+
+    const contaEncontrada = CONTAS_CORRENTES_MOCK.find(conta => conta.numero === contaCorrente);
+    if (contaEncontrada) {
+      this.contaCorrenteValidada.set(true);
+      this.titularEncontrado.set(contaEncontrada.titular);
+      this.clearContaCorrenteLookupError();
+      return;
+    }
+
+    this.contaCorrenteValidada.set(false);
+    this.titularEncontrado.set('');
+    this.setContaCorrenteLookupError();
+  }
+
+  private setContaCorrenteLookupError(): void {
+    const contaCorrenteControl = this.form.get('contaCorrente');
+    if (!contaCorrenteControl) {
+      return;
+    }
+
+    const currentErrors = contaCorrenteControl.errors ?? {};
+    contaCorrenteControl.setErrors({
+      ...currentErrors,
+      contaCorrenteNotFound: true
+    });
+  }
+
+  private clearContaCorrenteLookupError(): void {
+    const contaCorrenteControl = this.form.get('contaCorrente');
+    if (!contaCorrenteControl?.errors) {
+      return;
+    }
+
+    const { contaCorrenteNotFound, ...remainingErrors } = contaCorrenteControl.errors;
+    const hasOtherErrors = Object.keys(remainingErrors).length > 0;
+    contaCorrenteControl.setErrors(hasOtherErrors ? remainingErrors : null);
   }
 
 }
